@@ -1,202 +1,135 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0d2a52">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="FAXBOX">
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <title>FAXBOX v1.2</title>
-  <style>
-    :root{--navy:#0d2a52;--line:#dfe5ec;--bg:#f5f7fa;--red:#b42318;--green:#147a52}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;background:var(--bg);color:#1f2937}
-    header{position:sticky;top:0;z-index:10;background:var(--navy);color:#fff;padding:calc(12px + env(safe-area-inset-top)) 16px 12px;display:flex;align-items:center;justify-content:space-between}
-    header h1{font-size:20px;margin:0}.badge{background:#fff;color:var(--navy);border-radius:99px;padding:4px 9px;font-weight:700}
-    main{max-width:900px;margin:auto;padding:14px 14px calc(90px + env(safe-area-inset-bottom))}
-    .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.03)}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row3{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px}
-    @media(max-width:640px){.row,.row3{grid-template-columns:1fr}}
-    label{display:block;font-size:12px;font-weight:700;margin:8px 0 4px}
-    input,select,button{font:inherit}
-    input,select{width:100%;padding:11px;border:1px solid #cdd5df;border-radius:9px;background:#fff}
-    button{border:0;border-radius:9px;padding:10px 13px;font-weight:700;cursor:pointer}
-    .primary{background:var(--navy);color:#fff}.secondary{background:#e9eef5;color:var(--navy)}.danger{background:#fee4e2;color:var(--red)}
-    .ok{color:var(--green);font-weight:700}.err{color:var(--red);font-weight:700}.muted{color:#667085;font-size:12px}
-    .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.toolbar>*{flex:0 0 auto}
-    table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:top}th{text-align:left;background:#f9fafb}
-    .status{font-size:11px;font-weight:800;border-radius:99px;padding:3px 7px;display:inline-block;background:#eef2f6}
-    .actions{display:flex;gap:5px;flex-wrap:wrap}.actions button{font-size:12px;padding:6px 8px}
-    nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--navy);padding:8px 8px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:8px}
-    nav button{background:transparent;color:#fff;min-width:88px}.hidden{display:none!important}
-    .center{text-align:center}.big{font-size:28px;font-weight:800;color:var(--navy)}
-    #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:#111827;color:#fff;padding:10px 14px;border-radius:10px;z-index:50;display:none;max-width:90%}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d2a52">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="FAXBOX">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>FAXBOX v1.3</title>
+<style>
+:root{--navy:#0d2a52;--line:#dfe5ec;--bg:#f5f7fa;--red:#b42318;--green:#147a52;--amber:#9a6700}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;background:var(--bg);color:#1f2937}
+header{position:sticky;top:0;z-index:10;background:var(--navy);color:#fff;padding:calc(12px + env(safe-area-inset-top)) 16px 12px;display:flex;align-items:center;justify-content:space-between}header h1{font-size:20px;margin:0}.badge{background:#fff;color:var(--navy);border-radius:99px;padding:4px 9px;font-weight:700}
+main{max-width:1080px;margin:auto;padding:14px 14px calc(94px + env(safe-area-inset-bottom))}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}@media(max-width:720px){.row,.row3{grid-template-columns:1fr}}
+label{display:block;font-size:12px;font-weight:700;margin:8px 0 4px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:10px;border:1px solid #cdd5df;border-radius:9px;background:#fff}textarea{min-height:70px}button{border:0;border-radius:9px;padding:9px 12px;font-weight:700;cursor:pointer}.primary{background:var(--navy);color:#fff}.secondary{background:#e9eef5;color:var(--navy)}.danger{background:#fee4e2;color:var(--red)}.warn{background:#fff3cd;color:#7a5600}.ok{color:var(--green);font-weight:700}.err{color:var(--red);font-weight:700}.muted{color:#667085;font-size:12px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.toolbar>*{flex:0 0 auto}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}th{text-align:left;background:#f9fafb;white-space:nowrap}.status{font-size:11px;font-weight:800;border-radius:99px;padding:3px 7px;display:inline-block;background:#eef2f6}.actions{display:flex;gap:5px;flex-wrap:wrap}.actions button{font-size:12px;padding:6px 8px}.center{text-align:center}.big{font-size:28px;font-weight:800;color:var(--navy)}.hidden{display:none!important}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--navy);padding:7px 6px calc(7px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:3px}nav button{background:transparent;color:#fff;min-width:72px;font-size:12px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:92px;background:#111827;color:#fff;padding:10px 14px;border-radius:10px;z-index:80;display:none;max-width:90%}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:70;display:flex;align-items:center;justify-content:center;padding:14px}.modalbox{width:min(760px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:14px;padding:16px}.favorite{color:#a36a00;font-weight:800}.checkbox-cell{text-align:center}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px}.filterbox{background:#f9fafb;border:1px solid var(--line);padding:10px;border-radius:10px;margin-bottom:10px}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-<header><h1>📠 FAXBOX</h1><span class="badge" id="waitingBadge">0</span></header>
+<header><h1>📠 FAXBOX <small style="font-size:11px">v1.3</small></h1><span class="badge" id="waitingBadge">0</span></header>
 <main>
-  <section id="setupView" class="card hidden">
-    <h2>初期設定</h2>
-    <p class="muted">SupabaseのProject URLとPublishable keyを入力します。この端末内に保存されます。</p>
-    <label>Supabase Project URL</label><input id="sbUrl" placeholder="https://xxxx.supabase.co">
-    <label>Publishable key</label><input id="sbKey" placeholder="sb_publishable_...">
-    <div class="toolbar" style="margin-top:12px"><button class="primary" onclick="saveSetup()">保存</button></div>
-  </section>
+<section id="setupView" class="card hidden"><h2>初期設定</h2><label>Supabase Project URL</label><input id="sbUrl"><label>Publishable key</label><input id="sbKey"><div class="toolbar" style="margin-top:12px"><button class="primary" onclick="saveSetup()">保存</button></div></section>
+<section id="loginView" class="card hidden"><h2>ログイン</h2><label>メールアドレス</label><input id="email" type="email"><label>パスワード</label><input id="password" type="password"><div class="toolbar" style="margin-top:12px"><button class="primary" onclick="login()">ログイン</button><button class="secondary" onclick="showSetup()">接続設定</button></div><p id="loginMsg" class="muted"></p></section>
 
-  <section id="loginView" class="card hidden">
-    <h2>ログイン</h2>
-    <label>メールアドレス</label><input id="email" type="email" autocomplete="username">
-    <label>パスワード</label><input id="password" type="password" autocomplete="current-password">
-    <div class="toolbar" style="margin-top:12px">
-      <button class="primary" onclick="login()">ログイン</button>
-      <button class="secondary" onclick="showSetup()">接続設定</button>
-    </div>
-    <p id="loginMsg" class="muted"></p>
-  </section>
+<section id="appView" class="hidden">
+<div id="waitingTab">
+  <div class="card"><div class="row"><div><div class="muted">送信待ち・保留</div><div class="big" id="waitingCount">0</div></div><div><div class="muted">本日送信済</div><div class="big" id="todaySentCount">0</div></div></div></div>
+  <div class="card">
+    <h2 style="margin-top:0">FAXを追加</h2>
+    <div class="row"><div><label>地区</label><select id="districtSelect" onchange="populateRecipientSelect()"></select></div><div><label>送信先</label><select id="recipientSelect" onchange="selectRecipient()"></select></div></div>
+    <div class="row"><div><label>送信先名</label><input id="recipientName" placeholder="マスター選択で自動入力"></div><div><label>FAX番号</label><input id="faxNumber" inputmode="tel" placeholder="マスター選択で自動入力"></div></div>
+    <label>PDF</label><input id="pdfFile" type="file" accept="application/pdf,.pdf" onchange="updatePdfButtons()">
+    <div class="toolbar" style="margin-top:8px"><button class="secondary" id="previewLocalBtn" onclick="previewSelectedFile('pdfFile')" disabled>PDFプレビュー</button></div>
+    <div class="row"><div><label>送信方法</label><select id="sendMode" onchange="toggleSchedule()"><option value="schedule">予約送信</option><option value="now">今すぐ送信</option></select></div><div id="scheduleWrap"><label>送信予定日時</label><input id="scheduledAt" type="datetime-local"></div></div>
+    <label>メモ</label><input id="memo" placeholder="任意">
+    <div class="toolbar" style="margin-top:12px"><button class="primary" id="addBtn" onclick="addFax()">FAXBOXへ登録</button></div>
+  </div>
+  <div class="card"><div class="section-title"><h2 style="margin:0">送信待ち一覧</h2><button class="secondary" onclick="loadAll()">更新</button></div><p class="muted">「修正」を押した時点で送信保留になります。修正後に「送信待ちへ戻す」を押すまでConnectorは送信しません。</p><div style="overflow:auto"><table><thead><tr><th>予定</th><th>地区</th><th>送信先</th><th>PDF</th><th>状態</th><th>操作</th></tr></thead><tbody id="waitingBody"></tbody></table></div></div>
+</div>
 
-  <section id="appView" class="hidden">
-    <div id="waitingTab">
-      <div class="card">
-        <div class="row">
-          <div><div class="muted">送信待ち</div><div class="big" id="waitingCount">0</div></div>
-          <div><div class="muted">本日送信済</div><div class="big" id="todaySentCount">0</div></div>
-        </div>
-      </div>
-      <div class="card">
-        <h2 style="margin-top:0">FAXを追加</h2>
-        <div class="row">
-          <div><label>送信先名</label><input id="recipientName" placeholder="例：○○商事"></div>
-          <div><label>FAX番号</label><input id="faxNumber" inputmode="tel" placeholder="例：0766-00-0000"></div>
-        </div>
-        <label>PDF</label><input id="pdfFile" type="file" accept="application/pdf,.pdf">
-        <div class="row">
-          <div><label>送信方法</label><select id="sendMode" onchange="toggleSchedule()"><option value="schedule">予約送信</option><option value="now">今すぐ送信</option></select></div>
-          <div id="scheduleWrap"><label>送信予定日時</label><input id="scheduledAt" type="datetime-local"></div>
-        </div>
-        <label>メモ</label><input id="memo" placeholder="任意">
-        <div class="toolbar" style="margin-top:12px"><button class="primary" id="addBtn" onclick="addFax()">FAXBOXへ登録</button></div>
-        <p class="muted">「今すぐ送信」もクラウド側の送信処理が実行します。端末からFAX回線へ直接送る方式ではありません。</p>
-      </div>
-      <div class="card">
-        <div class="toolbar" style="justify-content:space-between"><h2 style="margin:0">送信待ち一覧</h2><button class="secondary" onclick="loadJobs()">更新</button></div>
-        <div style="overflow:auto"><table><thead><tr><th>予定</th><th>送信先</th><th>PDF</th><th>状態</th><th>操作</th></tr></thead><tbody id="waitingBody"></tbody></table></div>
-      </div>
-    </div>
+<div id="historyTab" class="hidden">
+  <div class="card"><div class="section-title"><h2 style="margin:0">送信履歴</h2><button class="secondary" onclick="loadAll()">更新</button></div>
+    <div class="filterbox"><div class="row3"><div><label>開始日</label><input id="histFrom" type="date" oninput="renderHistory()"></div><div><label>終了日</label><input id="histTo" type="date" oninput="renderHistory()"></div><div><label>状態</label><select id="histStatus" onchange="renderHistory()"><option value="">すべて</option><option value="sent">送信済</option><option value="canceled">取消</option></select></div></div><div class="row"><div><label>地区</label><select id="histDistrict" onchange="renderHistory()"></select></div><div><label>キーワード</label><input id="histKeyword" placeholder="送信先・FAX番号・PDF名・メモ" oninput="renderHistory()"></div></div></div>
+    <div style="overflow:auto"><table><thead><tr><th>送信日時</th><th>地区</th><th>送信先</th><th>PDF</th><th>結果</th><th>操作</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+  </div>
+</div>
 
-    <div id="historyTab" class="hidden">
-      <div class="card">
-        <div class="toolbar" style="justify-content:space-between"><h2 style="margin:0">送信履歴</h2><button class="secondary" onclick="loadJobs()">更新</button></div>
-        <div style="overflow:auto"><table><thead><tr><th>送信日時</th><th>送信先</th><th>PDF</th><th>状態</th><th>操作</th></tr></thead><tbody id="historyBody"></tbody></table></div>
-      </div>
-    </div>
+<div id="masterTab" class="hidden">
+  <div class="card"><h2 style="margin-top:0">送信先マスター</h2><div class="row3"><div><label>地区</label><select id="masterDistrict"></select></div><div><label>送信先名</label><input id="masterName"></div><div><label>FAX番号</label><input id="masterFax" inputmode="tel"></div></div><div class="row3"><div><label>よく使う</label><select id="masterFavorite"><option value="false">いいえ</option><option value="true">はい</option></select></div><div><label>並び順</label><input id="masterSort" type="number" value="100"></div><div><label>メモ</label><input id="masterMemo"></div></div><input id="masterEditId" type="hidden"><div class="toolbar" style="margin-top:12px"><button class="primary" onclick="saveRecipient()">保存</button><button class="secondary" onclick="clearMasterForm()">新規入力</button></div></div>
+  <div class="card"><div class="section-title"><h2 style="margin:0">Excel一括取込</h2></div><p class="muted">列名：地区 / 送信先名 / FAX番号 / よく使う / メモ / 並び順。既存の同一「送信先名＋FAX番号」は重複登録しません。</p><input id="masterExcel" type="file" accept=".xlsx,.xls,.csv"><div class="toolbar" style="margin-top:8px"><button class="primary" onclick="importRecipientsExcel()">一括取込</button></div></div>
+  <div class="card"><div class="row"><div><label>一覧の地区絞込</label><select id="masterFilterDistrict" onchange="renderRecipients()"></select></div><div><label>検索</label><input id="masterFilterKeyword" oninput="renderRecipients()" placeholder="送信先・FAX番号"></div></div><div style="overflow:auto"><table><thead><tr><th>よく使う</th><th>地区</th><th>送信先</th><th>FAX番号</th><th>メモ</th><th>操作</th></tr></thead><tbody id="masterBody"></tbody></table></div></div>
+</div>
 
-    <div id="settingsTab" class="hidden">
-      <div class="card">
-        <h2>設定</h2>
-        <p id="accountInfo" class="muted"></p>
-        <div class="toolbar">
-          <button class="secondary" onclick="showSetup()">Supabase接続設定</button>
-          <button class="danger" onclick="logout()">ログアウト</button>
-        </div>
-      </div>
-    </div>
-  </section>
+<div id="settingsTab" class="hidden">
+  <div class="card"><h2>バックアップ</h2><p class="muted">送信先マスターと送信履歴をまとめてバックアップします。アプリを開いた日に1回、自動バックアップ（30日保持）も作成します。</p><div class="toolbar"><button class="primary" onclick="createBackup('manual')">今すぐバックアップ</button><button class="secondary" onclick="loadBackups()">一覧更新</button></div><div style="overflow:auto;margin-top:10px"><table><thead><tr><th>日時</th><th>種別</th><th>送信先</th><th>履歴</th><th>操作</th></tr></thead><tbody id="backupBody"></tbody></table></div></div>
+  <div class="card"><h2>設定</h2><p id="accountInfo" class="muted"></p><div class="toolbar"><button class="secondary" onclick="showSetup()">Supabase接続設定</button><button class="danger" onclick="logout()">ログアウト</button></div></div>
+</div>
+</section>
 </main>
-<nav id="nav" class="hidden">
-  <button onclick="showTab('waiting')">📥<br>FAXBOX</button>
-  <button onclick="showTab('history')">🕘<br>履歴</button>
-  <button onclick="showTab('settings')">⚙️<br>設定</button>
-</nav>
+<nav id="nav" class="hidden"><button onclick="showTab('waiting')">📥<br>FAXBOX</button><button onclick="showTab('history')">🕘<br>履歴</button><button onclick="showTab('master')">📇<br>送信先</button><button onclick="showTab('settings')">⚙️<br>設定</button></nav>
 <div id="toast"></div>
-<script>
-const STORE={url:'faxbox_sb_url',key:'faxbox_sb_key',session:'faxbox_session'};
-let session=null,jobs=[];
 
+<div id="editModal" class="modal hidden"><div class="modalbox"><div class="section-title"><h2 style="margin:0">送信待ちを修正（保留中）</h2><button class="secondary" onclick="closeEditModal()">閉じる</button></div><input id="editId" type="hidden"><div class="row"><div><label>地区</label><select id="editDistrict" onchange="populateEditRecipientSelect()"></select></div><div><label>送信先マスター</label><select id="editRecipientSelect" onchange="selectEditRecipient()"></select></div></div><div class="row"><div><label>送信先名</label><input id="editName"></div><div><label>FAX番号</label><input id="editFax"></div></div><label>送信予定日時</label><input id="editScheduledAt" type="datetime-local"><label>メモ</label><input id="editMemo"><label>PDF差替え（任意）</label><input id="editPdf" type="file" accept="application/pdf,.pdf"><div class="toolbar" style="margin-top:8px"><button class="secondary" onclick="previewEditCurrent()">現在のPDF</button><button class="secondary" onclick="previewSelectedFile('editPdf')">差替えPDF</button></div><div class="toolbar" style="margin-top:14px"><button class="warn" onclick="saveEdit(true)">保留のまま保存</button><button class="primary" onclick="saveEdit(false)">保存して送信待ちへ戻す</button></div></div></div>
+
+<script>
+const STORE={url:'faxbox_sb_url',key:'faxbox_sb_key',session:'faxbox_session',autoBackupDay:'faxbox_auto_backup_day'};
+const DISTRICTS=['北海道・東北','関東','中部東海','北陸','関西','中四国九州','富山県①高岡','富山県②呉西その他','富山県③富山','富山県④呉東その他'];
+let session=null,jobs=[],recipients=[],backups=[];
+function $(id){return document.getElementById(id)}
 function cfg(){return {url:(localStorage.getItem(STORE.url)||'').replace(/\/$/,''),key:localStorage.getItem(STORE.key)||''}}
-function toast(s){const e=document.getElementById('toast');e.textContent=s;e.style.display='block';setTimeout(()=>e.style.display='none',2600)}
-function fmt(iso){if(!iso)return '-';return new Intl.DateTimeFormat('ja-JP',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(iso))}
-function authHeaders(extra={}){const c=cfg();return {'apikey':c.key,'Authorization':'Bearer '+session.access_token,...extra}}
-function showSetup(){document.getElementById('setupView').classList.remove('hidden');document.getElementById('loginView').classList.add('hidden');document.getElementById('appView').classList.add('hidden');document.getElementById('nav').classList.add('hidden');const c=cfg();sbUrl.value=c.url;sbKey.value=c.key}
-function saveSetup(){localStorage.setItem(STORE.url,sbUrl.value.trim());localStorage.setItem(STORE.key,sbKey.value.trim());localStorage.removeItem(STORE.session);session=null;boot();toast('接続設定を保存しました')}
-function showLogin(){setupView.classList.add('hidden');loginView.classList.remove('hidden');appView.classList.add('hidden');nav.classList.add('hidden')}
-function showApp(){setupView.classList.add('hidden');loginView.classList.add('hidden');appView.classList.remove('hidden');nav.classList.remove('hidden');accountInfo.textContent=session?.user?.email||'';setDefaultSchedule();loadJobs()}
-function setDefaultSchedule(){const d=new Date(Date.now()+30*60000);d.setMinutes(Math.ceil(d.getMinutes()/10)*10,0,0);const local=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);scheduledAt.value=local}
-function toggleSchedule(){scheduleWrap.classList.toggle('hidden',sendMode.value==='now')}
-function showTab(name){for(const n of ['waiting','history','settings'])document.getElementById(n+'Tab').classList.toggle('hidden',n!==name)}
-async function login(){
-  loginMsg.textContent='ログイン中...';const c=cfg();
-  try{
-    const r=await fetch(c.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':c.key,'Content-Type':'application/json'},body:JSON.stringify({email:email.value.trim(),password:password.value})});
-    const x=await r.json();if(!r.ok)throw new Error(x.error_description||x.msg||'ログイン失敗');
-    session=x;localStorage.setItem(STORE.session,JSON.stringify(session));showApp()
-  }catch(e){loginMsg.textContent=e.message}
-}
-function logout(){localStorage.removeItem(STORE.session);session=null;showLogin()}
-async function refreshSession(){
-  if(!session?.refresh_token)return false;const c=cfg();
-  try{const r=await fetch(c.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':c.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token})});if(!r.ok)return false;session=await r.json();localStorage.setItem(STORE.session,JSON.stringify(session));return true}catch{return false}
-}
-async function api(path,opt={}){
-  let r=await fetch(cfg().url+path,{...opt,headers:{...authHeaders(opt.headers||{})}});
-  if(r.status===401 && await refreshSession())r=await fetch(cfg().url+path,{...opt,headers:{...authHeaders(opt.headers||{})}});
-  return r
-}
-async function addFax(){
-  const f=pdfFile.files[0];if(!recipientName.value.trim()||!faxNumber.value.trim()||!f){toast('送信先名・FAX番号・PDFを入力してください');return}
-  if(f.type && f.type!=='application/pdf'){toast('PDFファイルを選択してください');return}
-  let when=sendMode.value==='now'?new Date():new Date(scheduledAt.value);
-  if(isNaN(when)){toast('送信予定日時を入力してください');return}
-  addBtn.disabled=true;addBtn.textContent='登録中...';
-  try{
-    const id=crypto.randomUUID(), path=session.user.id+'/'+id+'/document.pdf';
-    let up=await api('/storage/v1/object/faxbox-documents/'+encodeURI(path),{method:'POST',headers:{'Content-Type':'application/pdf','x-upsert':'false'},body:f});
-    if(!up.ok)throw new Error('PDFアップロード失敗: '+await up.text());
-    const body={id,user_id:session.user.id,recipient_name:recipientName.value.trim(),fax_number:faxNumber.value.trim(),file_path:path,original_filename:f.name,scheduled_at:when.toISOString(),status:'queued',memo:memo.value.trim(),dedupe_key:id};
-    let ins=await api('/rest/v1/faxbox_jobs',{method:'POST',headers:{'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});
-    if(!ins.ok){await api('/storage/v1/object/faxbox-documents/'+encodeURI(path),{method:'DELETE'});throw new Error('登録失敗: '+await ins.text())}
-    recipientName.value='';faxNumber.value='';pdfFile.value='';memo.value='';setDefaultSchedule();toast('FAXBOXへ登録しました');await loadJobs()
-  }catch(e){toast(e.message)}finally{addBtn.disabled=false;addBtn.textContent='FAXBOXへ登録'}
-}
-async function loadJobs(){
-  if(!session)return;
-  try{
-    const r=await api('/rest/v1/faxbox_jobs?select=*&order=scheduled_at.desc&limit=300');
-    if(!r.ok)throw new Error(await r.text());jobs=await r.json();renderJobs()
-  }catch(e){toast('一覧取得失敗: '+e.message)}
-}
-function renderJobs(){
-  const waiting=jobs.filter(x=>['queued','sending','failed'].includes(x.status));
-  const history=jobs.filter(x=>['sent','canceled'].includes(x.status));
-  waitingBadge.textContent=waiting.filter(x=>x.status==='queued').length;waitingCount.textContent=waiting.length;
-  const start=new Date();start.setHours(0,0,0,0);todaySentCount.textContent=jobs.filter(x=>x.status==='sent'&&new Date(x.sent_at)>=start).length;
-  waitingBody.innerHTML=waiting.length?waiting.map(rowWaiting).join(''):'<tr><td colspan="5" class="center muted">送信待ちはありません</td></tr>';
-  historyBody.innerHTML=history.length?history.map(rowHistory).join(''):'<tr><td colspan="5" class="center muted">履歴はありません</td></tr>'
-}
+function toast(s){const e=$('toast');e.textContent=s;e.style.display='block';setTimeout(()=>e.style.display='none',2800)}
 function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function st(s){return {queued:'待機中',sending:'送信処理中',failed:'エラー',sent:'送信済',canceled:'取消'}[s]||s}
-function rowWaiting(x){return `<tr><td>${fmt(x.scheduled_at)}</td><td><b>${esc(x.recipient_name)}</b><br><span class="muted">${esc(x.fax_number)}</span></td><td>${esc(x.original_filename)}</td><td><span class="status">${st(x.status)}</span>${x.last_error?'<br><span class="err">'+esc(x.last_error)+'</span>':''}</td><td><div class="actions"><button class="secondary" onclick="preview('${x.id}')">PDF</button>${x.status!=='sending'?`<button class="primary" onclick="sendNow('${x.id}')">今すぐ</button><button class="danger" onclick="cancelJob('${x.id}')">取消</button>`:''}</div></td></tr>`}
-function rowHistory(x){return `<tr><td>${fmt(x.sent_at||x.canceled_at||x.updated_at)}</td><td><b>${esc(x.recipient_name)}</b><br><span class="muted">${esc(x.fax_number)}</span></td><td>${esc(x.original_filename)}</td><td><span class="status">${st(x.status)}</span></td><td><div class="actions"><button class="secondary" onclick="preview('${x.id}')">PDF</button>${x.status==='canceled'?`<button class="primary" onclick="retry('${x.id}')">再登録</button>`:''}</div></td></tr>`}
-async function patchJob(id,data){
-  const r=await api('/rest/v1/faxbox_jobs?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(data)});if(!r.ok)throw new Error(await r.text());await loadJobs()
-}
-async function cancelJob(id){if(!confirm('このFAX予約を取り消しますか？'))return;try{await patchJob(id,{status:'canceled',canceled_at:new Date().toISOString()});toast('取り消しました')}catch(e){toast(e.message)}}
-async function sendNow(id){try{await patchJob(id,{status:'queued',scheduled_at:new Date().toISOString(),last_error:null});toast('今すぐ送信の待機列へ移しました')}catch(e){toast(e.message)}}
-async function retry(id){try{await patchJob(id,{status:'queued',scheduled_at:new Date().toISOString(),canceled_at:null,last_error:null});toast('再登録しました')}catch(e){toast(e.message)}}
-async function preview(id){
-  const x=jobs.find(j=>j.id===id);if(!x)return;
-  try{const r=await api('/storage/v1/object/authenticated/faxbox-documents/'+encodeURI(x.file_path));if(!r.ok)throw new Error(await r.text());const b=await r.blob();window.open(URL.createObjectURL(b),'_blank')}catch(e){toast('PDF表示失敗: '+e.message)}
-}
-async function boot(){
-  const c=cfg();if(!c.url||!c.key){showSetup();return}
-  try{session=JSON.parse(localStorage.getItem(STORE.session)||'null')}catch{}
-  if(!session){showLogin();return}
-  const me=await api('/auth/v1/user');if(me.ok){session.user=await me.json();showApp()}else if(await refreshSession()){showApp()}else{logout()}
-}
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
-boot();setInterval(()=>{if(session)loadJobs()},60000);
+function fmt(iso){if(!iso)return '-';return new Intl.DateTimeFormat('ja-JP',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(iso))}
+function localValue(iso){if(!iso)return '';const d=new Date(iso);return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16)}
+function authHeaders(extra={}){const c=cfg();return {'apikey':c.key,'Authorization':'Bearer '+session.access_token,...extra}}
+function st(s){return {queued:'待機中',held:'修正保留',sending:'送信処理中',failed:'エラー',sent:'送信済',canceled:'取消'}[s]||s}
+function districtOptions(includeFav=false,allLabel='選択してください'){return `<option value="">${allLabel}</option>`+(includeFav?'<option value="__favorite__">★ よく使う送信先</option>':'')+DISTRICTS.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('')}
+function showSetup(){$('setupView').classList.remove('hidden');$('loginView').classList.add('hidden');$('appView').classList.add('hidden');$('nav').classList.add('hidden');const c=cfg();$('sbUrl').value=c.url;$('sbKey').value=c.key}
+function saveSetup(){localStorage.setItem(STORE.url,$('sbUrl').value.trim());localStorage.setItem(STORE.key,$('sbKey').value.trim());localStorage.removeItem(STORE.session);session=null;boot();toast('接続設定を保存しました')}
+function showLogin(){$('setupView').classList.add('hidden');$('loginView').classList.remove('hidden');$('appView').classList.add('hidden');$('nav').classList.add('hidden')}
+function showApp(){$('setupView').classList.add('hidden');$('loginView').classList.add('hidden');$('appView').classList.remove('hidden');$('nav').classList.remove('hidden');$('accountInfo').textContent=session?.user?.email||'';initSelects();setDefaultSchedule();loadAll()}
+function initSelects(){$('districtSelect').innerHTML=districtOptions(true,'地区を選択');$('histDistrict').innerHTML=districtOptions(false,'すべて');$('masterDistrict').innerHTML=districtOptions(false,'地区を選択');$('masterFilterDistrict').innerHTML=districtOptions(false,'すべて');$('editDistrict').innerHTML=districtOptions(true,'地区を選択')}
+function setDefaultSchedule(){const d=new Date(Date.now()+30*60000);d.setMinutes(Math.ceil(d.getMinutes()/10)*10,0,0);$('scheduledAt').value=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16)}
+function toggleSchedule(){$('scheduleWrap').classList.toggle('hidden',$('sendMode').value==='now')}
+function showTab(name){for(const n of ['waiting','history','master','settings'])$(n+'Tab').classList.toggle('hidden',n!==name);if(name==='settings')loadBackups()}
+async function login(){const c=cfg();$('loginMsg').textContent='ログイン中...';try{const r=await fetch(c.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':c.key,'Content-Type':'application/json'},body:JSON.stringify({email:$('email').value.trim(),password:$('password').value})});const x=await r.json();if(!r.ok)throw new Error(x.error_description||x.msg||'ログイン失敗');session=x;localStorage.setItem(STORE.session,JSON.stringify(session));showApp()}catch(e){$('loginMsg').textContent=e.message}}
+function logout(){localStorage.removeItem(STORE.session);session=null;showLogin()}
+async function refreshSession(){if(!session?.refresh_token)return false;const c=cfg();try{const r=await fetch(c.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':c.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token})});if(!r.ok)return false;session=await r.json();localStorage.setItem(STORE.session,JSON.stringify(session));return true}catch{return false}}
+async function api(path,opt={}){let r=await fetch(cfg().url+path,{...opt,headers:{...authHeaders(opt.headers||{})}});if(r.status===401&&await refreshSession())r=await fetch(cfg().url+path,{...opt,headers:{...authHeaders(opt.headers||{})}});return r}
+async function loadAll(){await Promise.all([loadJobs(false),loadRecipients(false)]);renderJobs();renderRecipients();await ensureAutoBackup()}
+async function loadJobs(render=true){if(!session)return;try{const r=await api('/rest/v1/faxbox_jobs?select=*&order=scheduled_at.desc&limit=1000');if(!r.ok)throw new Error(await r.text());jobs=await r.json();if(render)renderJobs()}catch(e){toast('一覧取得失敗: '+e.message)}}
+async function loadRecipients(render=true){try{const r=await api('/rest/v1/faxbox_recipients?select=*&active=eq.true&order=favorite.desc,sort_order.asc,recipient_name.asc&limit=2000');if(!r.ok)throw new Error(await r.text());recipients=await r.json();populateRecipientSelect();populateEditRecipientSelect();if(render)renderRecipients()}catch(e){toast('送信先マスター取得失敗: '+e.message)}}
+function populateRecipientSelect(){const d=$('districtSelect').value;let list=d==='__favorite__'?recipients.filter(x=>x.favorite):recipients.filter(x=>x.district===d);list.sort((a,b)=>(b.favorite-a.favorite)||(a.sort_order-b.sort_order)||a.recipient_name.localeCompare(b.recipient_name,'ja'));$('recipientSelect').innerHTML='<option value="">送信先を選択</option>'+list.map(x=>`<option value="${x.id}">${x.favorite?'★ ':''}${esc(x.recipient_name)}</option>`).join('')}
+function selectRecipient(){const x=recipients.find(r=>r.id===$('recipientSelect').value);if(!x)return;$('recipientName').value=x.recipient_name;$('faxNumber').value=x.fax_number;if($('districtSelect').value==='__favorite__')$('districtSelect').value=x.district}
+function updatePdfButtons(){$('previewLocalBtn').disabled=!$('pdfFile').files[0]}
+function previewSelectedFile(id){const f=$(id).files[0];if(!f){toast('PDFを選択してください');return}window.open(URL.createObjectURL(f),'_blank')}
+async function addFax(){const f=$('pdfFile').files[0];if(!$('recipientName').value.trim()||!$('faxNumber').value.trim()||!f){toast('送信先・FAX番号・PDFを入力してください');return}let when=$('sendMode').value==='now'?new Date():new Date($('scheduledAt').value);if(isNaN(when)){toast('送信予定日時を入力してください');return}const rec=recipients.find(r=>r.id===$('recipientSelect').value);$('addBtn').disabled=true;try{const id=crypto.randomUUID(),path=session.user.id+'/'+id+'/document.pdf';let up=await api('/storage/v1/object/faxbox-documents/'+encodeURI(path),{method:'POST',headers:{'Content-Type':'application/pdf','x-upsert':'false'},body:f});if(!up.ok)throw new Error('PDFアップロード失敗: '+await up.text());const body={id,user_id:session.user.id,recipient_id:rec?.id||null,district:rec?.district||($('districtSelect').value==='__favorite__'?'':$('districtSelect').value)||null,recipient_name:$('recipientName').value.trim(),fax_number:$('faxNumber').value.trim(),file_path:path,original_filename:f.name,scheduled_at:when.toISOString(),status:'queued',memo:$('memo').value.trim(),dedupe_key:id};let ins=await api('/rest/v1/faxbox_jobs',{method:'POST',headers:{'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});if(!ins.ok)throw new Error('登録失敗: '+await ins.text());$('recipientName').value='';$('faxNumber').value='';$('pdfFile').value='';$('memo').value='';$('districtSelect').value='';populateRecipientSelect();setDefaultSchedule();updatePdfButtons();toast('FAXBOXへ登録しました');await loadJobs()}catch(e){toast(e.message)}finally{$('addBtn').disabled=false}}
+function renderJobs(){const waiting=jobs.filter(x=>['queued','held','sending','failed'].includes(x.status));$('waitingBadge').textContent=waiting.filter(x=>x.status==='queued').length;$('waitingCount').textContent=waiting.length;const start=new Date();start.setHours(0,0,0,0);$('todaySentCount').textContent=jobs.filter(x=>x.status==='sent'&&new Date(x.sent_at)>=start).length;$('waitingBody').innerHTML=waiting.length?waiting.map(rowWaiting).join(''):'<tr><td colspan="6" class="center muted">送信待ちはありません</td></tr>';renderHistory()}
+function rowWaiting(x){return `<tr><td>${fmt(x.scheduled_at)}</td><td>${esc(x.district||'')}</td><td><b>${esc(x.recipient_name)}</b><br><span class="muted">${esc(x.fax_number)}</span></td><td>${esc(x.original_filename)}</td><td><span class="status">${st(x.status)}</span>${x.last_error?'<br><span class="err">'+esc(x.last_error)+'</span>':''}</td><td><div class="actions"><button class="secondary" onclick="preview('${x.id}')">PDF</button>${x.status!=='sending'?`<button class="secondary" onclick="beginEdit('${x.id}')">修正</button>${x.status==='held'?`<button class="primary" onclick="releaseHold('${x.id}')">保留解除</button>`:''}<button class="primary" onclick="sendNow('${x.id}')">今すぐ</button><button class="danger" onclick="cancelJob('${x.id}')">取消</button>`:''}</div></td></tr>`}
+function renderHistory(){let arr=jobs.filter(x=>['sent','canceled'].includes(x.status));const f=$('histFrom').value,t=$('histTo').value,s=$('histStatus').value,d=$('histDistrict').value,k=$('histKeyword').value.trim().toLowerCase();arr=arr.filter(x=>{const dt=new Date(x.sent_at||x.canceled_at||x.updated_at);if(f&&dt<new Date(f+'T00:00:00'))return false;if(t&&dt>new Date(t+'T23:59:59'))return false;if(s&&x.status!==s)return false;if(d&&x.district!==d)return false;if(k&&!`${x.recipient_name} ${x.fax_number} ${x.original_filename} ${x.memo||''}`.toLowerCase().includes(k))return false;return true});$('historyBody').innerHTML=arr.length?arr.map(x=>`<tr><td>${fmt(x.sent_at||x.canceled_at||x.updated_at)}</td><td>${esc(x.district||'')}</td><td><b>${esc(x.recipient_name)}</b><br><span class="muted">${esc(x.fax_number)}</span></td><td>${esc(x.original_filename)}</td><td><span class="status">${st(x.status)}</span>${x.last_error?'<br><span class="err">'+esc(x.last_error)+'</span>':''}</td><td><button class="secondary" onclick="preview('${x.id}')">PDF</button></td></tr>`).join(''):'<tr><td colspan="6" class="center muted">該当する履歴はありません</td></tr>'}
+async function patchJob(id,data){const r=await api('/rest/v1/faxbox_jobs?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(data)});if(!r.ok)throw new Error(await r.text());await loadJobs()}
+async function cancelJob(id){if(!confirm('このFAX予約を取り消しますか？'))return;try{await patchJob(id,{status:'canceled',canceled_at:new Date().toISOString(),locked_at:null});toast('取り消しました')}catch(e){toast(e.message)}}
+async function sendNow(id){try{await patchJob(id,{status:'queued',scheduled_at:new Date().toISOString(),last_error:null,attempt_count:0,locked_at:null});toast('今すぐ送信の待機列へ移しました')}catch(e){toast(e.message)}}
+async function releaseHold(id){try{await patchJob(id,{status:'queued',last_error:null,attempt_count:0,locked_at:null});toast('送信保留を解除しました')}catch(e){toast(e.message)}}
+async function preview(id){const x=jobs.find(j=>j.id===id);if(!x)return;try{const r=await api('/storage/v1/object/authenticated/faxbox-documents/'+encodeURI(x.file_path));if(!r.ok)throw new Error(await r.text());window.open(URL.createObjectURL(await r.blob()),'_blank')}catch(e){toast('PDF表示失敗: '+e.message)}}
+async function beginEdit(id){const x=jobs.find(j=>j.id===id);if(!x||x.status==='sending')return;try{if(x.status!=='held')await patchJob(id,{status:'held',locked_at:null,edited_at:new Date().toISOString()});await loadJobs(false);const y=jobs.find(j=>j.id===id)||x;$('editId').value=id;$('editDistrict').value=y.district||'';populateEditRecipientSelect();$('editRecipientSelect').value=y.recipient_id||'';$('editName').value=y.recipient_name;$('editFax').value=y.fax_number;$('editScheduledAt').value=localValue(y.scheduled_at);$('editMemo').value=y.memo||'';$('editPdf').value='';$('editModal').classList.remove('hidden')}catch(e){toast('保留設定失敗: '+e.message)}}
+function populateEditRecipientSelect(){const d=$('editDistrict').value;let list=d==='__favorite__'?recipients.filter(x=>x.favorite):recipients.filter(x=>x.district===d);$('editRecipientSelect').innerHTML='<option value="">送信先を選択</option>'+list.map(x=>`<option value="${x.id}">${x.favorite?'★ ':''}${esc(x.recipient_name)}</option>`).join('')}
+function selectEditRecipient(){const x=recipients.find(r=>r.id===$('editRecipientSelect').value);if(!x)return;$('editName').value=x.recipient_name;$('editFax').value=x.fax_number;$('editDistrict').value=x.district}
+function closeEditModal(){$('editModal').classList.add('hidden')}
+function previewEditCurrent(){preview($('editId').value)}
+async function saveEdit(keepHeld){const id=$('editId').value,x=jobs.find(j=>j.id===id);if(!x)return;try{const f=$('editPdf').files[0];let original=x.original_filename;if(f){const up=await api('/storage/v1/object/faxbox-documents/'+encodeURI(x.file_path),{method:'POST',headers:{'Content-Type':'application/pdf','x-upsert':'true'},body:f});if(!up.ok)throw new Error('PDF差替え失敗: '+await up.text());original=f.name}const rec=recipients.find(r=>r.id===$('editRecipientSelect').value);await patchJob(id,{recipient_id:rec?.id||null,district:$('editDistrict').value==='__favorite__'?(rec?.district||null):($('editDistrict').value||null),recipient_name:$('editName').value.trim(),fax_number:$('editFax').value.trim(),scheduled_at:new Date($('editScheduledAt').value).toISOString(),memo:$('editMemo').value.trim(),original_filename:original,status:keepHeld?'held':'queued',last_error:null,attempt_count:0,locked_at:null,edited_at:new Date().toISOString()});closeEditModal();toast(keepHeld?'保留のまま保存しました':'送信待ちへ戻しました')}catch(e){toast(e.message)}}
+function clearMasterForm(){$('masterEditId').value='';$('masterDistrict').value='';$('masterName').value='';$('masterFax').value='';$('masterFavorite').value='false';$('masterSort').value='100';$('masterMemo').value=''}
+async function saveRecipient(){const district=$('masterDistrict').value,name=$('masterName').value.trim(),fax=$('masterFax').value.trim();if(!district||!name||!fax){toast('地区・送信先名・FAX番号は必須です');return}const body={user_id:session.user.id,district,recipient_name:name,fax_number:fax,favorite:$('masterFavorite').value==='true',sort_order:Number($('masterSort').value||100),memo:$('masterMemo').value.trim(),active:true};try{const id=$('masterEditId').value;const r=await api('/rest/v1/faxbox_recipients'+(id?'?id=eq.'+encodeURIComponent(id):''),{method:id?'PATCH':'POST',headers:{'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});if(!r.ok)throw new Error(await r.text());clearMasterForm();await loadRecipients();toast(id?'修正しました':'追加しました')}catch(e){toast(e.message)}}
+function renderRecipients(){let arr=[...recipients];const d=$('masterFilterDistrict').value,k=$('masterFilterKeyword').value.trim().toLowerCase();if(d)arr=arr.filter(x=>x.district===d);if(k)arr=arr.filter(x=>`${x.recipient_name} ${x.fax_number} ${x.memo||''}`.toLowerCase().includes(k));$('masterBody').innerHTML=arr.length?arr.map(x=>`<tr><td class="checkbox-cell"><input type="checkbox" ${x.favorite?'checked':''} onchange="toggleFavorite('${x.id}',this.checked)" style="width:auto"></td><td>${esc(x.district)}</td><td class="${x.favorite?'favorite':''}">${x.favorite?'★ ':''}${esc(x.recipient_name)}</td><td>${esc(x.fax_number)}</td><td>${esc(x.memo||'')}</td><td><div class="actions"><button class="secondary" onclick="editRecipient('${x.id}')">修正</button><button class="danger" onclick="deleteRecipient('${x.id}')">削除</button></div></td></tr>`).join(''):'<tr><td colspan="6" class="center muted">送信先がありません</td></tr>'}
+async function toggleFavorite(id,v){try{const r=await api('/rest/v1/faxbox_recipients?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({favorite:v})});if(!r.ok)throw new Error(await r.text());await loadRecipients()}catch(e){toast(e.message)}}
+function editRecipient(id){const x=recipients.find(r=>r.id===id);if(!x)return;$('masterEditId').value=x.id;$('masterDistrict').value=x.district;$('masterName').value=x.recipient_name;$('masterFax').value=x.fax_number;$('masterFavorite').value=String(!!x.favorite);$('masterSort').value=x.sort_order??100;$('masterMemo').value=x.memo||'';window.scrollTo({top:0,behavior:'smooth'})}
+async function deleteRecipient(id){if(!confirm('この送信先を削除しますか？'))return;try{const r=await api('/rest/v1/faxbox_recipients?id=eq.'+encodeURIComponent(id),{method:'DELETE'});if(!r.ok)throw new Error(await r.text());await loadRecipients();toast('削除しました')}catch(e){toast(e.message)}}
+async function importRecipientsExcel(){const f=$('masterExcel').files[0];if(!f){toast('Excelファイルを選択してください');return}if(typeof XLSX==='undefined'){toast('Excel読込ライブラリを取得できません');return}try{const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});let data=[],skip=0;for(const r of rows){const district=String(r['地区']||'').trim(),name=String(r['送信先名']||'').trim(),fax=String(r['FAX番号']||'').trim();if(!district&&!name&&!fax)continue;if(!DISTRICTS.includes(district)||!name||!fax){skip++;continue}if(recipients.some(x=>x.recipient_name===name&&x.fax_number===fax)){skip++;continue}data.push({user_id:session.user.id,district,recipient_name:name,fax_number:fax,favorite:['はい','1','true','TRUE','○'].includes(String(r['よく使う']).trim()),memo:String(r['メモ']||'').trim(),sort_order:Number(r['並び順']||100),active:true})}for(let i=0;i<data.length;i+=100){const r=await api('/rest/v1/faxbox_recipients',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data.slice(i,i+100))});if(!r.ok)throw new Error(await r.text())}await loadRecipients();toast(`${data.length}件取込、${skip}件スキップ`)}catch(e){toast('Excel取込失敗: '+e.message)}}
+async function createBackup(type='manual',silent=false){try{await Promise.all([loadJobs(false),loadRecipients(false)]);const payload={version:'1.3',created_at:new Date().toISOString(),recipients,jobs};const body={user_id:session.user.id,backup_type:type,recipients_count:recipients.length,jobs_count:jobs.length,payload};const r=await api('/rest/v1/faxbox_backups',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error(await r.text());const cutoff=new Date(Date.now()-30*86400000).toISOString();await api('/rest/v1/faxbox_backups?created_at=lt.'+encodeURIComponent(cutoff),{method:'DELETE'});if(!silent)toast('バックアップを作成しました');await loadBackups()}catch(e){if(!silent)toast('バックアップ失敗: '+e.message)}}
+async function ensureAutoBackup(){const day=new Date().toLocaleDateString('sv-SE');if(localStorage.getItem(STORE.autoBackupDay)===day)return;await createBackup('auto',true);localStorage.setItem(STORE.autoBackupDay,day)}
+async function loadBackups(){try{const r=await api('/rest/v1/faxbox_backups?select=*&order=created_at.desc&limit=100');if(!r.ok)throw new Error(await r.text());backups=await r.json();$('backupBody').innerHTML=backups.length?backups.map(b=>`<tr><td>${fmt(b.created_at)}</td><td>${b.backup_type==='auto'?'自動':'手動'}</td><td>${b.recipients_count}</td><td>${b.jobs_count}</td><td><div class="actions"><button class="secondary" onclick="downloadBackup('${b.id}')">JSON</button><button class="warn" onclick="restoreRecipients('${b.id}')">送信先を復元</button><button class="danger" onclick="deleteBackup('${b.id}')">削除</button></div></td></tr>`).join(''):'<tr><td colspan="5" class="center muted">バックアップはありません</td></tr>'}catch(e){toast('バックアップ一覧取得失敗: '+e.message)}}
+function downloadBackup(id){const b=backups.find(x=>x.id===id);if(!b)return;const blob=new Blob([JSON.stringify(b.payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`faxbox-backup-${new Date(b.created_at).toISOString().replace(/[:.]/g,'-')}.json`;a.click();URL.revokeObjectURL(a.href)}
+async function restoreRecipients(id){const b=backups.find(x=>x.id===id);if(!b?.payload?.recipients)return;if(!confirm('現在の送信先マスターをバックアップ時点へ置き換えます。よろしいですか？'))return;try{let r=await api('/rest/v1/faxbox_recipients?user_id=eq.'+encodeURIComponent(session.user.id),{method:'DELETE'});if(!r.ok)throw new Error(await r.text());const data=b.payload.recipients.map(x=>({...x,user_id:session.user.id}));for(let i=0;i<data.length;i+=100){r=await api('/rest/v1/faxbox_recipients',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data.slice(i,i+100))});if(!r.ok)throw new Error(await r.text())}await loadRecipients();toast('送信先マスターを復元しました')}catch(e){toast('復元失敗: '+e.message)}}
+async function deleteBackup(id){if(!confirm('このバックアップを削除しますか？'))return;const r=await api('/rest/v1/faxbox_backups?id=eq.'+encodeURIComponent(id),{method:'DELETE'});if(r.ok){toast('削除しました');loadBackups()}else toast(await r.text())}
+async function boot(){const c=cfg();if(!c.url||!c.key){showSetup();return}try{session=JSON.parse(localStorage.getItem(STORE.session)||'null')}catch{}if(!session){showLogin();return}const me=await api('/auth/v1/user');if(me.ok){session.user=await me.json();showApp()}else if(await refreshSession()){showApp()}else logout()}
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});boot();setInterval(()=>{if(session)loadAll()},60000);
 </script>
 </body></html>
