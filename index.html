@@ -3,133 +3,167 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0d2a52">
+<meta name="theme-color" content="#0b2b55">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="FAXBOX">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="昆布在庫管理">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" href="./icons/icon-192.png">
-<title>FAXBOX v1.3</title>
+<link rel="apple-touch-icon" href="./icon-180.png">
+<title>昆布在庫管理</title>
 <style>
-:root{--navy:#0d2a52;--line:#dfe5ec;--bg:#f5f7fa;--red:#b42318;--green:#147a52;--amber:#9a6700}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;background:var(--bg);color:#1f2937}
-header{position:sticky;top:0;z-index:10;background:var(--navy);color:#fff;padding:calc(12px + env(safe-area-inset-top)) 16px 12px;display:flex;align-items:center;justify-content:space-between}header h1{font-size:20px;margin:0}.badge{background:#fff;color:var(--navy);border-radius:99px;padding:4px 9px;font-weight:700}
-main{max-width:1080px;margin:auto;padding:14px 14px calc(94px + env(safe-area-inset-bottom))}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.03)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}@media(max-width:720px){.row,.row3{grid-template-columns:1fr}}
-label{display:block;font-size:12px;font-weight:700;margin:8px 0 4px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:10px;border:1px solid #cdd5df;border-radius:9px;background:#fff}textarea{min-height:70px}button{border:0;border-radius:9px;padding:9px 12px;font-weight:700;cursor:pointer}.primary{background:var(--navy);color:#fff}.secondary{background:#e9eef5;color:var(--navy)}.danger{background:#fee4e2;color:var(--red)}.warn{background:#fff3cd;color:#7a5600}.ok{color:var(--green);font-weight:700}.err{color:var(--red);font-weight:700}.muted{color:#667085;font-size:12px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.toolbar>*{flex:0 0 auto}
-table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}th{text-align:left;background:#f9fafb;white-space:nowrap}.status{font-size:11px;font-weight:800;border-radius:99px;padding:3px 7px;display:inline-block;background:#eef2f6}.actions{display:flex;gap:5px;flex-wrap:wrap}.actions button{font-size:12px;padding:6px 8px}.center{text-align:center}.big{font-size:28px;font-weight:800;color:var(--navy)}.hidden{display:none!important}
-nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--navy);padding:7px 6px calc(7px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:3px}nav button{background:transparent;color:#fff;min-width:72px;font-size:12px}
-#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:92px;background:#111827;color:#fff;padding:10px 14px;border-radius:10px;z-index:80;display:none;max-width:90%}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:70;display:flex;align-items:center;justify-content:center;padding:14px}.modalbox{width:min(760px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:14px;padding:16px}.favorite{color:#a36a00;font-weight:800}.checkbox-cell{text-align:center}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px}.filterbox{background:#f9fafb;border:1px solid var(--line);padding:10px;border-radius:10px;margin-bottom:10px}
+*{box-sizing:border-box}html{width:100%;max-width:100%;overflow-x:clip}body{width:100%;max-width:100%;overflow-x:clip;margin:0;background:#f4f7fb;color:#102a43;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;-webkit-tap-highlight-color:transparent}header{background:#0b2b55;color:#fff;padding:16px 18px;text-align:center;font-size:23px;font-weight:700;position:sticky;top:0;z-index:8;padding-top:calc(16px + env(safe-area-inset-top))}main{padding:14px 12px calc(100px + env(safe-area-inset-bottom));max-width:1200px;margin:auto}.card{background:#fff;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px #0001}.grid,.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.action{padding:17px 12px;border:0;border-radius:15px;background:#fff;box-shadow:0 2px 8px #0001;text-align:left;font-size:16px;font-weight:700}.action small{display:block;margin-top:6px;color:#627d98;font-weight:400}.green{border-left:6px solid #35a853}.blue{border-left:6px solid #2367c9}.orange{border-left:6px solid #e88700}.purple{border-left:6px solid #635bca}.gray{border-left:6px solid #708090}.stat{background:#eef4fb;padding:12px;border-radius:13px}.stat b{display:block;font-size:22px;margin-top:4px}.form{display:grid;gap:11px}.form input,.form select,.form textarea{width:100%;padding:12px;border:1px solid #ccd6e2;border-radius:10px;font-size:16px;margin-top:4px;background:#fff}.btn{width:100%;padding:14px;border:0;border-radius:12px;background:#0b2b55;color:#fff;font-size:16px;font-weight:700}.secondary{background:#e7edf5;color:#102a43}.danger{background:#b42318}.btn.danger{color:#fff}.shipment-badge{padding:4px 8px;border-radius:99px;background:#eef4fb;font-size:12px}.mini{padding:8px 10px;border:0;border-radius:9px;font-weight:700;background:#e7edf5;color:#102a43}.mini.danger{color:#fff;background:#b42318}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:1600px;font-size:12px}th,td{border:1px solid #cfd8e3;padding:7px;text-align:right;white-space:nowrap}th{background:#eaf0f7;text-align:center}th:first-child,td:first-child{text-align:left}.group{background:#dbe7f5;font-weight:700}.sub{background:#f2f6fa}.season{background:#fff}.total{font-weight:700;background:#f6f8fb}.note{background:#eef8f0;padding:11px;border-radius:10px;color:#216e39}.warning{background:#fff6e5;padding:11px;border-radius:10px;color:#7a4b00}.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px}.toolbar .btn{padding:11px;font-size:14px}.muted{color:#627d98;font-size:13px}.empty{padding:20px;text-align:center;color:#627d98}.row{display:flex;gap:8px;align-items:center;justify-content:space-between}.row+.row{margin-top:8px}.master-list{display:grid;gap:7px}.master-item{display:flex;gap:8px}.master-item input{flex:1}.master-item button{width:auto}.pill{display:inline-block;padding:4px 8px;border-radius:99px;background:#eef4fb;font-size:12px}.search{margin-bottom:10px}.record-actions{display:flex;gap:6px}.nowrap{white-space:nowrap}.subgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.small{font-size:13px}@media(min-width:700px){.toolbar{grid-template-columns:repeat(4,1fr)}.grid{grid-template-columns:repeat(3,1fr)}.subgrid{grid-template-columns:repeat(3,1fr)}nav{left:50%;transform:translateX(-50%);max-width:1000px;border-radius:18px 18px 0 0}}
+nav{position:fixed;bottom:0;left:0;right:0;background:#0b2b55;display:flex;justify-content:space-around;padding:7px 2px calc(7px + env(safe-area-inset-bottom));z-index:9;box-shadow:0 -2px 10px #0002}nav button{border:0;background:none;color:#fff;font-size:10px;min-width:16.4%;padding:2px 1px}nav span{display:block;font-size:20px;line-height:23px}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
-<body>
-<header><h1>📠 FAXBOX <small style="font-size:11px">v1.3</small></h1><span class="badge" id="waitingBadge">0</span></header>
-<main>
-<section id="setupView" class="card hidden"><h2>初期設定</h2><label>Supabase Project URL</label><input id="sbUrl"><label>Publishable key</label><input id="sbKey"><div class="toolbar" style="margin-top:12px"><button class="primary" onclick="saveSetup()">保存</button></div></section>
-<section id="loginView" class="card hidden"><h2>ログイン</h2><label>メールアドレス</label><input id="email" type="email"><label>パスワード</label><input id="password" type="password"><div class="toolbar" style="margin-top:12px"><button class="primary" onclick="login()">ログイン</button><button class="secondary" onclick="showSetup()">接続設定</button></div><p id="loginMsg" class="muted"></p></section>
+<body><header>昆布在庫管理</header><main id="app"></main>
+<nav><button id="homeNavBtn"><span>🏠</span>ホーム</button><button id="shipNavBtn" aria-label="戻る" title="戻る"><span>⬅️</span>戻る</button><button id="stockNavBtn"><span>▦</span>在庫表</button><button id="logsNavBtn"><span>≡</span>入出庫履歴</button><button id="inNavBtn"><span>↓</span>入庫登録</button><button id="moreBtn"><span>⋯</span>その他</button></nav>
+<script>
+(function(){
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('./sw-v160.js?v=161.8', {scope:'./'}).catch(function(err){
+        console.warn('Service Worker登録に失敗しました:', err);
+      });
+    });
+  }
+})();
+</script>
+<script>
+/* iPhone Safari compatibility for locally bundled PDF.js */
+(function(){
+  if (typeof Promise !== 'undefined' && typeof Promise.withResolvers !== 'function') {
+    Promise.withResolvers = function() {
+      var resolve, reject;
+      var promise = new Promise(function(res, rej){ resolve = res; reject = rej; });
+      return { promise: promise, resolve: resolve, reject: reject };
+    };
+  }
 
-<section id="appView" class="hidden">
-<div id="waitingTab">
-  <div class="card"><div class="row"><div><div class="muted">送信待ち・保留</div><div class="big" id="waitingCount">0</div></div><div><div class="muted">本日送信済</div><div class="big" id="todaySentCount">0</div></div></div></div>
-  <div class="card">
-    <h2 style="margin-top:0">FAXを追加</h2>
-    <div class="row"><div><label>地区</label><select id="districtSelect" onchange="populateRecipientSelect()"></select></div><div><label>送信先</label><select id="recipientSelect" onchange="selectRecipient()"></select></div></div>
-    <div class="row"><div><label>送信先名</label><input id="recipientName" placeholder="マスター選択で自動入力"></div><div><label>FAX番号</label><input id="faxNumber" inputmode="tel" placeholder="マスター選択で自動入力"></div></div>
-    <label>PDF</label><input id="pdfFile" type="file" accept="application/pdf,.pdf" onchange="updatePdfButtons()">
-    <div class="toolbar" style="margin-top:8px"><button class="secondary" id="previewLocalBtn" onclick="previewSelectedFile('pdfFile')" disabled>PDFプレビュー</button></div>
-    <div class="row"><div><label>送信方法</label><select id="sendMode" onchange="toggleSchedule()"><option value="schedule">予約送信</option><option value="now">今すぐ送信</option></select></div><div id="scheduleWrap"><label>送信予定日時</label><input id="scheduledAt" type="datetime-local"></div></div>
-    <label>メモ</label><input id="memo" placeholder="任意">
-    <div class="toolbar" style="margin-top:12px"><button class="primary" id="addBtn" onclick="addFax()">FAXBOXへ登録</button></div>
-  </div>
-  <div class="card"><div class="section-title"><h2 style="margin:0">送信待ち一覧</h2><button class="secondary" onclick="loadAll()">更新</button></div><p class="muted">「修正」を押した時点で送信保留になります。修正後に「送信待ちへ戻す」を押すまでConnectorは送信しません。</p><div style="overflow:auto"><table><thead><tr><th>予定</th><th>地区</th><th>送信先</th><th>PDF</th><th>状態</th><th>操作</th></tr></thead><tbody id="waitingBody"></tbody></table></div></div>
-</div>
+  if (typeof ReadableStream !== 'undefined' && typeof Symbol !== 'undefined') {
+    if (typeof ReadableStream.prototype.values !== 'function') {
+      ReadableStream.prototype.values = function(options) {
+        var stream = this;
+        var preventCancel = !!(options && options.preventCancel);
+        var reader = stream.getReader();
+        var finished = false;
 
-<div id="historyTab" class="hidden">
-  <div class="card"><div class="section-title"><h2 style="margin:0">送信履歴</h2><button class="secondary" onclick="loadAll()">更新</button></div>
-    <div class="filterbox"><div class="row3"><div><label>開始日</label><input id="histFrom" type="date" oninput="renderHistory()"></div><div><label>終了日</label><input id="histTo" type="date" oninput="renderHistory()"></div><div><label>状態</label><select id="histStatus" onchange="renderHistory()"><option value="">すべて</option><option value="sent">送信済</option><option value="canceled">取消</option></select></div></div><div class="row"><div><label>地区</label><select id="histDistrict" onchange="renderHistory()"></select></div><div><label>キーワード</label><input id="histKeyword" placeholder="送信先・FAX番号・PDF名・メモ" oninput="renderHistory()"></div></div></div>
-    <div style="overflow:auto"><table><thead><tr><th>送信日時</th><th>地区</th><th>送信先</th><th>PDF</th><th>結果</th><th>操作</th></tr></thead><tbody id="historyBody"></tbody></table></div>
-  </div>
-</div>
+        var iterator = {
+          next: function() {
+            return reader.read().then(function(result) {
+              if (result.done) {
+                finished = true;
+                try { reader.releaseLock(); } catch(e) {}
+              }
+              return result;
+            });
+          },
+          return: function(value) {
+            finished = true;
+            var done = preventCancel
+              ? Promise.resolve()
+              : Promise.resolve(reader.cancel(value)).catch(function(){});
+            return done.then(function() {
+              try { reader.releaseLock(); } catch(e) {}
+              return { done: true, value: value };
+            });
+          }
+        };
+        iterator[Symbol.asyncIterator] = function(){ return iterator; };
+        return iterator;
+      };
+    }
 
-<div id="masterTab" class="hidden">
-  <div class="card"><h2 style="margin-top:0">送信先マスター</h2><div class="row3"><div><label>地区</label><select id="masterDistrict"></select></div><div><label>送信先名</label><input id="masterName"></div><div><label>FAX番号</label><input id="masterFax" inputmode="tel"></div></div><div class="row3"><div><label>よく使う</label><select id="masterFavorite"><option value="false">いいえ</option><option value="true">はい</option></select></div><div><label>並び順</label><input id="masterSort" type="number" value="100"></div><div><label>メモ</label><input id="masterMemo"></div></div><input id="masterEditId" type="hidden"><div class="toolbar" style="margin-top:12px"><button class="primary" onclick="saveRecipient()">保存</button><button class="secondary" onclick="clearMasterForm()">新規入力</button></div></div>
-  <div class="card"><div class="section-title"><h2 style="margin:0">Excel一括取込</h2></div><p class="muted">列名：地区 / 送信先名 / FAX番号 / よく使う / メモ / 並び順。既存の同一「送信先名＋FAX番号」は重複登録しません。</p><input id="masterExcel" type="file" accept=".xlsx,.xls,.csv"><div class="toolbar" style="margin-top:8px"><button class="primary" onclick="importRecipientsExcel()">一括取込</button></div></div>
-  <div class="card"><div class="row"><div><label>一覧の地区絞込</label><select id="masterFilterDistrict" onchange="renderRecipients()"></select></div><div><label>検索</label><input id="masterFilterKeyword" oninput="renderRecipients()" placeholder="送信先・FAX番号"></div></div><div style="overflow:auto"><table><thead><tr><th>よく使う</th><th>地区</th><th>送信先</th><th>FAX番号</th><th>メモ</th><th>操作</th></tr></thead><tbody id="masterBody"></tbody></table></div></div>
-</div>
+    if (Symbol.asyncIterator &&
+        typeof ReadableStream.prototype[Symbol.asyncIterator] !== 'function') {
+      ReadableStream.prototype[Symbol.asyncIterator] = function() {
+        return this.values();
+      };
+    }
+  }
+})();
+</script>
+<script src="./pdf-v58.js"></script>
+<script>
+(function(){
+  if (!globalThis.pdfjsLib || typeof globalThis.pdfjsLib.getDocument !== 'function') {
+    document.getElementById('app').innerHTML =
+      '<section class="card"><h2>PDF読取ライブラリの読込エラー</h2><div class="warning">PDFライブラリを起動できませんでした。ページを再読み込みしてください。</div></section>';
+    return;
+  }
+  globalThis.__KOMBU_PDFJS__ = globalThis.pdfjsLib;
+  globalThis.pdfjsLib.GlobalWorkerOptions.workerSrc = './pdf-worker-v58.js';
 
-<div id="settingsTab" class="hidden">
-  <div class="card"><h2>バックアップ</h2><p class="muted">送信先マスターと送信履歴をまとめてバックアップします。アプリを開いた日に1回、自動バックアップ（30日保持）も作成します。</p><div class="toolbar"><button class="primary" onclick="createBackup('manual')">今すぐバックアップ</button><button class="secondary" onclick="loadBackups()">一覧更新</button></div><div style="overflow:auto;margin-top:10px"><table><thead><tr><th>日時</th><th>種別</th><th>送信先</th><th>履歴</th><th>操作</th></tr></thead><tbody id="backupBody"></tbody></table></div></div>
-  <div class="card"><h2>設定</h2><p id="accountInfo" class="muted"></p><div class="toolbar"><button class="secondary" onclick="showSetup()">Supabase接続設定</button><button class="danger" onclick="logout()">ログアウト</button></div></div>
-</div>
-</section>
-</main>
-<nav id="nav" class="hidden"><button onclick="showTab('waiting')">📥<br>FAXBOX</button><button onclick="showTab('history')">🕘<br>履歴</button><button onclick="showTab('master')">📇<br>送信先</button><button onclick="showTab('settings')">⚙️<br>設定</button></nav>
-<div id="toast"></div>
+  var scripts = [
+  './refactor/js/core/refactor-core.js',
+  './refactor/js/products/products.js',
+  './refactor/js/core/storage.js',
+  './refactor/js/inventory/inventory.js',
+'./app-v159.js?v=160.0',
+'./kombu-pdf-filename-v1.js?v=1.3',
+'./kombu-live-refresh-v160.js?v=160.8',
+'./kombu-faxbox-bridge-v1.js?v=2.9',
+'./kombu-faxbox-direct-v2.js?v=2.12',
+];
 
-<div id="editModal" class="modal hidden"><div class="modalbox"><div class="section-title"><h2 style="margin:0">送信待ちを修正（保留中）</h2><button class="secondary" onclick="closeEditModal()">閉じる</button></div><input id="editId" type="hidden"><div class="row"><div><label>地区</label><select id="editDistrict" onchange="populateEditRecipientSelect()"></select></div><div><label>送信先マスター</label><select id="editRecipientSelect" onchange="selectEditRecipient()"></select></div></div><div class="row"><div><label>送信先名</label><input id="editName"></div><div><label>FAX番号</label><input id="editFax"></div></div><label>送信予定日時</label><input id="editScheduledAt" type="datetime-local"><label>メモ</label><input id="editMemo"><label>PDF差替え（任意）</label><input id="editPdf" type="file" accept="application/pdf,.pdf"><div class="toolbar" style="margin-top:8px"><button class="secondary" onclick="previewEditCurrent()">現在のPDF</button><button class="secondary" onclick="previewSelectedFile('editPdf')">差替えPDF</button></div><div class="toolbar" style="margin-top:14px"><button class="warn" onclick="saveEdit(true)">保留のまま保存</button><button class="primary" onclick="saveEdit(false)">保存して送信待ちへ戻す</button></div></div></div>
+function loadScript(index) {
+  if (index >= scripts.length) return;
+
+  var script = document.createElement('script');
+  script.src = scripts[index];
+  script.async = false;
+
+  script.onload = function() {
+    loadScript(index + 1);
+  };
+
+  script.onerror = function() {
+    document.getElementById('app').innerHTML =
+      '<section class="card"><h2>アプリ読込エラー</h2><div class="warning">' +
+      scripts[index] +
+      ' を読み込めませんでした。</div></section>';
+  };
+
+  document.body.appendChild(script);
+}
+
+function startKombuAppAfterSync() {
+  if (window.__KOMBU_V160_READY__) {
+    loadScript(0);
+    return;
+  }
+
+  window.addEventListener(
+    'kombu:v160-ready',
+    function () {
+      loadScript(0);
+    },
+    { once: true }
+  );
+}
+
+startKombuAppAfterSync();
+})();
+</script>
+
+<script src="./supabase-v2.js"></script>
 
 <script>
-const STORE={url:'faxbox_sb_url',key:'faxbox_sb_key',session:'faxbox_session',autoBackupDay:'faxbox_auto_backup_day'};
-const DISTRICTS=['北海道・東北','関東','中部東海','北陸','関西','中四国九州','富山県①高岡','富山県②呉西その他','富山県③富山','富山県④呉東その他'];
-let session=null,jobs=[],recipients=[],backups=[];
-function $(id){return document.getElementById(id)}
-function cfg(){return {url:(localStorage.getItem(STORE.url)||'').replace(/\/$/,''),key:localStorage.getItem(STORE.key)||''}}
-function toast(s){const e=$('toast');e.textContent=s;e.style.display='block';setTimeout(()=>e.style.display='none',2800)}
-function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function fmt(iso){if(!iso)return '-';return new Intl.DateTimeFormat('ja-JP',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(iso))}
-function localValue(iso){if(!iso)return '';const d=new Date(iso);return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16)}
-function authHeaders(extra={}){const c=cfg();return {'apikey':c.key,'Authorization':'Bearer '+session.access_token,...extra}}
-function st(s){return {queued:'待機中',held:'修正保留',sending:'送信処理中',failed:'エラー',sent:'送信済',canceled:'取消'}[s]||s}
-function districtOptions(includeFav=false,allLabel='選択してください'){return `<option value="">${allLabel}</option>`+(includeFav?'<option value="__favorite__">★ よく使う送信先</option>':'')+DISTRICTS.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('')}
-function showSetup(){$('setupView').classList.remove('hidden');$('loginView').classList.add('hidden');$('appView').classList.add('hidden');$('nav').classList.add('hidden');const c=cfg();$('sbUrl').value=c.url;$('sbKey').value=c.key}
-function saveSetup(){localStorage.setItem(STORE.url,$('sbUrl').value.trim());localStorage.setItem(STORE.key,$('sbKey').value.trim());localStorage.removeItem(STORE.session);session=null;boot();toast('接続設定を保存しました')}
-function showLogin(){$('setupView').classList.add('hidden');$('loginView').classList.remove('hidden');$('appView').classList.add('hidden');$('nav').classList.add('hidden')}
-function showApp(){$('setupView').classList.add('hidden');$('loginView').classList.add('hidden');$('appView').classList.remove('hidden');$('nav').classList.remove('hidden');$('accountInfo').textContent=session?.user?.email||'';initSelects();setDefaultSchedule();loadAll()}
-function initSelects(){$('districtSelect').innerHTML=districtOptions(true,'地区を選択');$('histDistrict').innerHTML=districtOptions(false,'すべて');$('masterDistrict').innerHTML=districtOptions(false,'地区を選択');$('masterFilterDistrict').innerHTML=districtOptions(false,'すべて');$('editDistrict').innerHTML=districtOptions(true,'地区を選択')}
-function setDefaultSchedule(){const d=new Date(Date.now()+30*60000);d.setMinutes(Math.ceil(d.getMinutes()/10)*10,0,0);$('scheduledAt').value=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16)}
-function toggleSchedule(){$('scheduleWrap').classList.toggle('hidden',$('sendMode').value==='now')}
-function showTab(name){for(const n of ['waiting','history','master','settings'])$(n+'Tab').classList.toggle('hidden',n!==name);if(name==='settings')loadBackups()}
-async function login(){const c=cfg();$('loginMsg').textContent='ログイン中...';try{const r=await fetch(c.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':c.key,'Content-Type':'application/json'},body:JSON.stringify({email:$('email').value.trim(),password:$('password').value})});const x=await r.json();if(!r.ok)throw new Error(x.error_description||x.msg||'ログイン失敗');session=x;localStorage.setItem(STORE.session,JSON.stringify(session));showApp()}catch(e){$('loginMsg').textContent=e.message}}
-function logout(){localStorage.removeItem(STORE.session);session=null;showLogin()}
-async function refreshSession(){if(!session?.refresh_token)return false;const c=cfg();try{const r=await fetch(c.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':c.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token})});if(!r.ok)return false;session=await r.json();localStorage.setItem(STORE.session,JSON.stringify(session));return true}catch{return false}}
-async function api(path,opt={}){let r=await fetch(cfg().url+path,{...opt,headers:{...authHeaders(opt.headers||{})}});if(r.status===401&&await refreshSession())r=await fetch(cfg().url+path,{...opt,headers:{...authHeaders(opt.headers||{})}});return r}
-async function loadAll(){await Promise.all([loadJobs(false),loadRecipients(false)]);renderJobs();renderRecipients();await ensureAutoBackup()}
-async function loadJobs(render=true){if(!session)return;try{const r=await api('/rest/v1/faxbox_jobs?select=*&order=scheduled_at.desc&limit=1000');if(!r.ok)throw new Error(await r.text());jobs=await r.json();if(render)renderJobs()}catch(e){toast('一覧取得失敗: '+e.message)}}
-async function loadRecipients(render=true){try{const r=await api('/rest/v1/faxbox_recipients?select=*&active=eq.true&order=favorite.desc,sort_order.asc,recipient_name.asc&limit=2000');if(!r.ok)throw new Error(await r.text());recipients=await r.json();populateRecipientSelect();populateEditRecipientSelect();if(render)renderRecipients()}catch(e){toast('送信先マスター取得失敗: '+e.message)}}
-function populateRecipientSelect(){const d=$('districtSelect').value;let list=d==='__favorite__'?recipients.filter(x=>x.favorite):recipients.filter(x=>x.district===d);list.sort((a,b)=>(b.favorite-a.favorite)||(a.sort_order-b.sort_order)||a.recipient_name.localeCompare(b.recipient_name,'ja'));$('recipientSelect').innerHTML='<option value="">送信先を選択</option>'+list.map(x=>`<option value="${x.id}">${x.favorite?'★ ':''}${esc(x.recipient_name)}</option>`).join('')}
-function selectRecipient(){const x=recipients.find(r=>r.id===$('recipientSelect').value);if(!x)return;$('recipientName').value=x.recipient_name;$('faxNumber').value=x.fax_number;if($('districtSelect').value==='__favorite__')$('districtSelect').value=x.district}
-function updatePdfButtons(){$('previewLocalBtn').disabled=!$('pdfFile').files[0]}
-function previewSelectedFile(id){const f=$(id).files[0];if(!f){toast('PDFを選択してください');return}window.open(URL.createObjectURL(f),'_blank')}
-async function addFax(){const f=$('pdfFile').files[0];if(!$('recipientName').value.trim()||!$('faxNumber').value.trim()||!f){toast('送信先・FAX番号・PDFを入力してください');return}let when=$('sendMode').value==='now'?new Date():new Date($('scheduledAt').value);if(isNaN(when)){toast('送信予定日時を入力してください');return}const rec=recipients.find(r=>r.id===$('recipientSelect').value);$('addBtn').disabled=true;try{const id=crypto.randomUUID(),path=session.user.id+'/'+id+'/document.pdf';let up=await api('/storage/v1/object/faxbox-documents/'+encodeURI(path),{method:'POST',headers:{'Content-Type':'application/pdf','x-upsert':'false'},body:f});if(!up.ok)throw new Error('PDFアップロード失敗: '+await up.text());const body={id,user_id:session.user.id,recipient_id:rec?.id||null,district:rec?.district||($('districtSelect').value==='__favorite__'?'':$('districtSelect').value)||null,recipient_name:$('recipientName').value.trim(),fax_number:$('faxNumber').value.trim(),file_path:path,original_filename:f.name,scheduled_at:when.toISOString(),status:'queued',memo:$('memo').value.trim(),dedupe_key:id};let ins=await api('/rest/v1/faxbox_jobs',{method:'POST',headers:{'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});if(!ins.ok)throw new Error('登録失敗: '+await ins.text());$('recipientName').value='';$('faxNumber').value='';$('pdfFile').value='';$('memo').value='';$('districtSelect').value='';populateRecipientSelect();setDefaultSchedule();updatePdfButtons();toast('FAXBOXへ登録しました');await loadJobs()}catch(e){toast(e.message)}finally{$('addBtn').disabled=false}}
-function renderJobs(){const waiting=jobs.filter(x=>['queued','held','sending','failed'].includes(x.status));$('waitingBadge').textContent=waiting.filter(x=>x.status==='queued').length;$('waitingCount').textContent=waiting.length;const start=new Date();start.setHours(0,0,0,0);$('todaySentCount').textContent=jobs.filter(x=>x.status==='sent'&&new Date(x.sent_at)>=start).length;$('waitingBody').innerHTML=waiting.length?waiting.map(rowWaiting).join(''):'<tr><td colspan="6" class="center muted">送信待ちはありません</td></tr>';renderHistory()}
-function rowWaiting(x){return `<tr><td>${fmt(x.scheduled_at)}</td><td>${esc(x.district||'')}</td><td><b>${esc(x.recipient_name)}</b><br><span class="muted">${esc(x.fax_number)}</span></td><td>${esc(x.original_filename)}</td><td><span class="status">${st(x.status)}</span>${x.last_error?'<br><span class="err">'+esc(x.last_error)+'</span>':''}</td><td><div class="actions"><button class="secondary" onclick="preview('${x.id}')">PDF</button>${x.status!=='sending'?`<button class="secondary" onclick="beginEdit('${x.id}')">修正</button>${x.status==='held'?`<button class="primary" onclick="releaseHold('${x.id}')">保留解除</button>`:''}<button class="primary" onclick="sendNow('${x.id}')">今すぐ</button><button class="danger" onclick="cancelJob('${x.id}')">取消</button>`:''}</div></td></tr>`}
-function renderHistory(){let arr=jobs.filter(x=>['sent','canceled'].includes(x.status));const f=$('histFrom').value,t=$('histTo').value,s=$('histStatus').value,d=$('histDistrict').value,k=$('histKeyword').value.trim().toLowerCase();arr=arr.filter(x=>{const dt=new Date(x.sent_at||x.canceled_at||x.updated_at);if(f&&dt<new Date(f+'T00:00:00'))return false;if(t&&dt>new Date(t+'T23:59:59'))return false;if(s&&x.status!==s)return false;if(d&&x.district!==d)return false;if(k&&!`${x.recipient_name} ${x.fax_number} ${x.original_filename} ${x.memo||''}`.toLowerCase().includes(k))return false;return true});$('historyBody').innerHTML=arr.length?arr.map(x=>`<tr><td>${fmt(x.sent_at||x.canceled_at||x.updated_at)}</td><td>${esc(x.district||'')}</td><td><b>${esc(x.recipient_name)}</b><br><span class="muted">${esc(x.fax_number)}</span></td><td>${esc(x.original_filename)}</td><td><span class="status">${st(x.status)}</span>${x.last_error?'<br><span class="err">'+esc(x.last_error)+'</span>':''}</td><td><button class="secondary" onclick="preview('${x.id}')">PDF</button></td></tr>`).join(''):'<tr><td colspan="6" class="center muted">該当する履歴はありません</td></tr>'}
-async function patchJob(id,data){const r=await api('/rest/v1/faxbox_jobs?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(data)});if(!r.ok)throw new Error(await r.text());await loadJobs()}
-async function cancelJob(id){if(!confirm('このFAX予約を取り消しますか？'))return;try{await patchJob(id,{status:'canceled',canceled_at:new Date().toISOString(),locked_at:null});toast('取り消しました')}catch(e){toast(e.message)}}
-async function sendNow(id){try{await patchJob(id,{status:'queued',scheduled_at:new Date().toISOString(),last_error:null,attempt_count:0,locked_at:null});toast('今すぐ送信の待機列へ移しました')}catch(e){toast(e.message)}}
-async function releaseHold(id){try{await patchJob(id,{status:'queued',last_error:null,attempt_count:0,locked_at:null});toast('送信保留を解除しました')}catch(e){toast(e.message)}}
-async function preview(id){const x=jobs.find(j=>j.id===id);if(!x)return;try{const r=await api('/storage/v1/object/authenticated/faxbox-documents/'+encodeURI(x.file_path));if(!r.ok)throw new Error(await r.text());window.open(URL.createObjectURL(await r.blob()),'_blank')}catch(e){toast('PDF表示失敗: '+e.message)}}
-async function beginEdit(id){const x=jobs.find(j=>j.id===id);if(!x||x.status==='sending')return;try{if(x.status!=='held')await patchJob(id,{status:'held',locked_at:null,edited_at:new Date().toISOString()});await loadJobs(false);const y=jobs.find(j=>j.id===id)||x;$('editId').value=id;$('editDistrict').value=y.district||'';populateEditRecipientSelect();$('editRecipientSelect').value=y.recipient_id||'';$('editName').value=y.recipient_name;$('editFax').value=y.fax_number;$('editScheduledAt').value=localValue(y.scheduled_at);$('editMemo').value=y.memo||'';$('editPdf').value='';$('editModal').classList.remove('hidden')}catch(e){toast('保留設定失敗: '+e.message)}}
-function populateEditRecipientSelect(){const d=$('editDistrict').value;let list=d==='__favorite__'?recipients.filter(x=>x.favorite):recipients.filter(x=>x.district===d);$('editRecipientSelect').innerHTML='<option value="">送信先を選択</option>'+list.map(x=>`<option value="${x.id}">${x.favorite?'★ ':''}${esc(x.recipient_name)}</option>`).join('')}
-function selectEditRecipient(){const x=recipients.find(r=>r.id===$('editRecipientSelect').value);if(!x)return;$('editName').value=x.recipient_name;$('editFax').value=x.fax_number;$('editDistrict').value=x.district}
-function closeEditModal(){$('editModal').classList.add('hidden')}
-function previewEditCurrent(){preview($('editId').value)}
-async function saveEdit(keepHeld){const id=$('editId').value,x=jobs.find(j=>j.id===id);if(!x)return;try{const f=$('editPdf').files[0];let original=x.original_filename;if(f){const up=await api('/storage/v1/object/faxbox-documents/'+encodeURI(x.file_path),{method:'POST',headers:{'Content-Type':'application/pdf','x-upsert':'true'},body:f});if(!up.ok)throw new Error('PDF差替え失敗: '+await up.text());original=f.name}const rec=recipients.find(r=>r.id===$('editRecipientSelect').value);await patchJob(id,{recipient_id:rec?.id||null,district:$('editDistrict').value==='__favorite__'?(rec?.district||null):($('editDistrict').value||null),recipient_name:$('editName').value.trim(),fax_number:$('editFax').value.trim(),scheduled_at:new Date($('editScheduledAt').value).toISOString(),memo:$('editMemo').value.trim(),original_filename:original,status:keepHeld?'held':'queued',last_error:null,attempt_count:0,locked_at:null,edited_at:new Date().toISOString()});closeEditModal();toast(keepHeld?'保留のまま保存しました':'送信待ちへ戻しました')}catch(e){toast(e.message)}}
-function clearMasterForm(){$('masterEditId').value='';$('masterDistrict').value='';$('masterName').value='';$('masterFax').value='';$('masterFavorite').value='false';$('masterSort').value='100';$('masterMemo').value=''}
-async function saveRecipient(){const district=$('masterDistrict').value,name=$('masterName').value.trim(),fax=$('masterFax').value.trim();if(!district||!name||!fax){toast('地区・送信先名・FAX番号は必須です');return}const body={user_id:session.user.id,district,recipient_name:name,fax_number:fax,favorite:$('masterFavorite').value==='true',sort_order:Number($('masterSort').value||100),memo:$('masterMemo').value.trim(),active:true};try{const id=$('masterEditId').value;const r=await api('/rest/v1/faxbox_recipients'+(id?'?id=eq.'+encodeURIComponent(id):''),{method:id?'PATCH':'POST',headers:{'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)});if(!r.ok)throw new Error(await r.text());clearMasterForm();await loadRecipients();toast(id?'修正しました':'追加しました')}catch(e){toast(e.message)}}
-function renderRecipients(){let arr=[...recipients];const d=$('masterFilterDistrict').value,k=$('masterFilterKeyword').value.trim().toLowerCase();if(d)arr=arr.filter(x=>x.district===d);if(k)arr=arr.filter(x=>`${x.recipient_name} ${x.fax_number} ${x.memo||''}`.toLowerCase().includes(k));$('masterBody').innerHTML=arr.length?arr.map(x=>`<tr><td class="checkbox-cell"><input type="checkbox" ${x.favorite?'checked':''} onchange="toggleFavorite('${x.id}',this.checked)" style="width:auto"></td><td>${esc(x.district)}</td><td class="${x.favorite?'favorite':''}">${x.favorite?'★ ':''}${esc(x.recipient_name)}</td><td>${esc(x.fax_number)}</td><td>${esc(x.memo||'')}</td><td><div class="actions"><button class="secondary" onclick="editRecipient('${x.id}')">修正</button><button class="danger" onclick="deleteRecipient('${x.id}')">削除</button></div></td></tr>`).join(''):'<tr><td colspan="6" class="center muted">送信先がありません</td></tr>'}
-async function toggleFavorite(id,v){try{const r=await api('/rest/v1/faxbox_recipients?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({favorite:v})});if(!r.ok)throw new Error(await r.text());await loadRecipients()}catch(e){toast(e.message)}}
-function editRecipient(id){const x=recipients.find(r=>r.id===id);if(!x)return;$('masterEditId').value=x.id;$('masterDistrict').value=x.district;$('masterName').value=x.recipient_name;$('masterFax').value=x.fax_number;$('masterFavorite').value=String(!!x.favorite);$('masterSort').value=x.sort_order??100;$('masterMemo').value=x.memo||'';window.scrollTo({top:0,behavior:'smooth'})}
-async function deleteRecipient(id){if(!confirm('この送信先を削除しますか？'))return;try{const r=await api('/rest/v1/faxbox_recipients?id=eq.'+encodeURIComponent(id),{method:'DELETE'});if(!r.ok)throw new Error(await r.text());await loadRecipients();toast('削除しました')}catch(e){toast(e.message)}}
-async function importRecipientsExcel(){const f=$('masterExcel').files[0];if(!f){toast('Excelファイルを選択してください');return}if(typeof XLSX==='undefined'){toast('Excel読込ライブラリを取得できません');return}try{const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});let data=[],skip=0;for(const r of rows){const district=String(r['地区']||'').trim(),name=String(r['送信先名']||'').trim(),fax=String(r['FAX番号']||'').trim();if(!district&&!name&&!fax)continue;if(!DISTRICTS.includes(district)||!name||!fax){skip++;continue}if(recipients.some(x=>x.recipient_name===name&&x.fax_number===fax)){skip++;continue}data.push({user_id:session.user.id,district,recipient_name:name,fax_number:fax,favorite:['はい','1','true','TRUE','○'].includes(String(r['よく使う']).trim()),memo:String(r['メモ']||'').trim(),sort_order:Number(r['並び順']||100),active:true})}for(let i=0;i<data.length;i+=100){const r=await api('/rest/v1/faxbox_recipients',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data.slice(i,i+100))});if(!r.ok)throw new Error(await r.text())}await loadRecipients();toast(`${data.length}件取込、${skip}件スキップ`)}catch(e){toast('Excel取込失敗: '+e.message)}}
-async function createBackup(type='manual',silent=false){try{await Promise.all([loadJobs(false),loadRecipients(false)]);const payload={version:'1.3',created_at:new Date().toISOString(),recipients,jobs};const body={user_id:session.user.id,backup_type:type,recipients_count:recipients.length,jobs_count:jobs.length,payload};const r=await api('/rest/v1/faxbox_backups',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error(await r.text());const cutoff=new Date(Date.now()-30*86400000).toISOString();await api('/rest/v1/faxbox_backups?created_at=lt.'+encodeURIComponent(cutoff),{method:'DELETE'});if(!silent)toast('バックアップを作成しました');await loadBackups()}catch(e){if(!silent)toast('バックアップ失敗: '+e.message)}}
-async function ensureAutoBackup(){const day=new Date().toLocaleDateString('sv-SE');if(localStorage.getItem(STORE.autoBackupDay)===day)return;await createBackup('auto',true);localStorage.setItem(STORE.autoBackupDay,day)}
-async function loadBackups(){try{const r=await api('/rest/v1/faxbox_backups?select=*&order=created_at.desc&limit=100');if(!r.ok)throw new Error(await r.text());backups=await r.json();$('backupBody').innerHTML=backups.length?backups.map(b=>`<tr><td>${fmt(b.created_at)}</td><td>${b.backup_type==='auto'?'自動':'手動'}</td><td>${b.recipients_count}</td><td>${b.jobs_count}</td><td><div class="actions"><button class="secondary" onclick="downloadBackup('${b.id}')">JSON</button><button class="warn" onclick="restoreRecipients('${b.id}')">送信先を復元</button><button class="danger" onclick="deleteBackup('${b.id}')">削除</button></div></td></tr>`).join(''):'<tr><td colspan="5" class="center muted">バックアップはありません</td></tr>'}catch(e){toast('バックアップ一覧取得失敗: '+e.message)}}
-function downloadBackup(id){const b=backups.find(x=>x.id===id);if(!b)return;const blob=new Blob([JSON.stringify(b.payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`faxbox-backup-${new Date(b.created_at).toISOString().replace(/[:.]/g,'-')}.json`;a.click();URL.revokeObjectURL(a.href)}
-async function restoreRecipients(id){const b=backups.find(x=>x.id===id);if(!b?.payload?.recipients)return;if(!confirm('現在の送信先マスターをバックアップ時点へ置き換えます。よろしいですか？'))return;try{let r=await api('/rest/v1/faxbox_recipients?user_id=eq.'+encodeURIComponent(session.user.id),{method:'DELETE'});if(!r.ok)throw new Error(await r.text());const data=b.payload.recipients.map(x=>({...x,user_id:session.user.id}));for(let i=0;i<data.length;i+=100){r=await api('/rest/v1/faxbox_recipients',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data.slice(i,i+100))});if(!r.ok)throw new Error(await r.text())}await loadRecipients();toast('送信先マスターを復元しました')}catch(e){toast('復元失敗: '+e.message)}}
-async function deleteBackup(id){if(!confirm('このバックアップを削除しますか？'))return;const r=await api('/rest/v1/faxbox_backups?id=eq.'+encodeURIComponent(id),{method:'DELETE'});if(r.ok){toast('削除しました');loadBackups()}else toast(await r.text())}
-async function boot(){const c=cfg();if(!c.url||!c.key){showSetup();return}try{session=JSON.parse(localStorage.getItem(STORE.session)||'null')}catch{}if(!session){showLogin();return}const me=await api('/auth/v1/user');if(me.ok){session.user=await me.json();showApp()}else if(await refreshSession()){showApp()}else logout()}
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});boot();setInterval(()=>{if(session)loadAll()},60000);
+window.KOMBU_SUPABASE_CONFIG = {
+  url: 'https://crltrozxztivkyxtjjxv.supabase.co',
+  publishableKey: 'sb_publishable_znOVYKMnJiZuxrsXPaLPxA_EbUdenvN'
+};
+
+window.kombuSupabase = window.supabase.createClient(
+  window.KOMBU_SUPABASE_CONFIG.url,
+  window.KOMBU_SUPABASE_CONFIG.publishableKey
+);
 </script>
-</body></html>
+
+
+<script src="./supabase-auth-v159.js"></script>
+<script src="./shipment-waybill-inbox-v159.js?v=159.9"></script>
+<script src="./kombu-complete-sync-v160.js?v=160.7"></script>
+
+
+</body>
+</html>
