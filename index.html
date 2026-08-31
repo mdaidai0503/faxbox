@@ -7,8 +7,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="FAXBOX">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" href="./icons/icon-192.png">
-<title>FAXBOX v1.4</title>
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>FAXBOX v1.5</title>
 <style>
 :root{--navy:#0d2a52;--line:#dfe5ec;--bg:#f5f7fa;--red:#b42318;--green:#147a52;--amber:#9a6700}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;background:var(--bg);color:#1f2937}
@@ -22,9 +22,10 @@ nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--navy);pad
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:70;display:flex;align-items:center;justify-content:center;padding:14px}.modalbox{width:min(760px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:14px;padding:16px}.favorite{color:#a36a00;font-weight:800}.checkbox-cell{text-align:center}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px}.filterbox{background:#f9fafb;border:1px solid var(--line);padding:10px;border-radius:10px;margin-bottom:10px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="./push-config.js"></script>
 </head>
 <body>
-<header><h1>📠 FAXBOX <small style="font-size:11px">v1.4</small></h1><span class="badge zero" id="waitingBadge" title="未送信FAX" aria-label="未送信FAX 0件" onclick="showTab('waiting')">0</span></header>
+<header><h1>📠 FAXBOX <small style="font-size:11px">v1.5</small></h1><span class="badge zero" id="waitingBadge" title="未送信FAX" aria-label="未送信FAX 0件" onclick="showTab('waiting')">0</span></header>
 <main>
 <section id="setupView" class="card hidden"><h2>初期設定</h2><label>Supabase Project URL</label><input id="sbUrl"><label>Publishable key</label><input id="sbKey"><div class="toolbar" style="margin-top:12px"><button class="primary" onclick="saveSetup()">保存</button></div></section>
 <section id="loginView" class="card hidden"><h2>ログイン</h2><label>メールアドレス</label><input id="email" type="email"><label>パスワード</label><input id="password" type="password"><div class="toolbar" style="margin-top:12px"><button class="primary" onclick="login()">ログイン</button><button class="secondary" onclick="showSetup()">接続設定</button></div><p id="loginMsg" class="muted"></p></section>
@@ -59,6 +60,16 @@ nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--navy);pad
 </div>
 
 <div id="settingsTab" class="hidden">
+  <div class="card">
+    <h2>iPhoneホーム画面バッジ</h2>
+    <p class="muted">未送信FAX件数が変わったとき、ホーム画面のFAXBOXアイコン右上の数字を更新します。iPhoneではホーム画面に追加したFAXBOXから通知を許可してください。</p>
+    <div id="pushBadgeStatus" class="muted">状態を確認中...</div>
+    <div class="toolbar" style="margin-top:10px">
+      <button class="primary" onclick="enablePushBadge()">通知・バッジを有効化</button>
+      <button class="secondary" onclick="refreshPushBadgeStatus()">状態更新</button>
+      <button class="danger" onclick="disablePushBadge()">解除</button>
+    </div>
+  </div>
   <div class="card"><h2>バックアップ</h2><p class="muted">送信先マスターと送信履歴をまとめてバックアップします。アプリを開いた日に1回、自動バックアップ（30日保持）も作成します。</p><div class="toolbar"><button class="primary" onclick="createBackup('manual')">今すぐバックアップ</button><button class="secondary" onclick="loadBackups()">一覧更新</button></div><div style="overflow:auto;margin-top:10px"><table><thead><tr><th>日時</th><th>種別</th><th>送信先</th><th>履歴</th><th>操作</th></tr></thead><tbody id="backupBody"></tbody></table></div></div>
   <div class="card"><h2>設定</h2><p id="accountInfo" class="muted"></p><div class="toolbar"><button class="secondary" onclick="showSetup()">Supabase接続設定</button><button class="danger" onclick="logout()">ログアウト</button></div></div>
 </div>
@@ -134,13 +145,115 @@ async function toggleFavorite(id,v){try{const r=await api('/rest/v1/faxbox_recip
 function editRecipient(id){const x=recipients.find(r=>r.id===id);if(!x)return;$('masterEditId').value=x.id;$('masterDistrict').value=x.district;$('masterName').value=x.recipient_name;$('masterFax').value=x.fax_number;$('masterFavorite').value=String(!!x.favorite);$('masterSort').value=x.sort_order??100;$('masterMemo').value=x.memo||'';window.scrollTo({top:0,behavior:'smooth'})}
 async function deleteRecipient(id){if(!confirm('この送信先を削除しますか？'))return;try{const r=await api('/rest/v1/faxbox_recipients?id=eq.'+encodeURIComponent(id),{method:'DELETE'});if(!r.ok)throw new Error(await r.text());await loadRecipients();toast('削除しました')}catch(e){toast(e.message)}}
 async function importRecipientsExcel(){const f=$('masterExcel').files[0];if(!f){toast('Excelファイルを選択してください');return}if(typeof XLSX==='undefined'){toast('Excel読込ライブラリを取得できません');return}try{const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});let data=[],skip=0;for(const r of rows){const district=String(r['地区']||'').trim(),name=String(r['送信先名']||'').trim(),fax=String(r['FAX番号']||'').trim();if(!district&&!name&&!fax)continue;if(!DISTRICTS.includes(district)||!name||!fax){skip++;continue}if(recipients.some(x=>x.recipient_name===name&&x.fax_number===fax)){skip++;continue}data.push({user_id:session.user.id,district,recipient_name:name,fax_number:fax,favorite:['はい','1','true','TRUE','○'].includes(String(r['よく使う']).trim()),memo:String(r['メモ']||'').trim(),sort_order:Number(r['並び順']||100),active:true})}for(let i=0;i<data.length;i+=100){const r=await api('/rest/v1/faxbox_recipients',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data.slice(i,i+100))});if(!r.ok)throw new Error(await r.text())}await loadRecipients();toast(`${data.length}件取込、${skip}件スキップ`)}catch(e){toast('Excel取込失敗: '+e.message)}}
-async function createBackup(type='manual',silent=false){try{await Promise.all([loadJobs(false),loadRecipients(false)]);const payload={version:'1.4',created_at:new Date().toISOString(),recipients,jobs};const body={user_id:session.user.id,backup_type:type,recipients_count:recipients.length,jobs_count:jobs.length,payload};const r=await api('/rest/v1/faxbox_backups',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error(await r.text());const cutoff=new Date(Date.now()-30*86400000).toISOString();await api('/rest/v1/faxbox_backups?created_at=lt.'+encodeURIComponent(cutoff),{method:'DELETE'});if(!silent)toast('バックアップを作成しました');await loadBackups()}catch(e){if(!silent)toast('バックアップ失敗: '+e.message)}}
+async function createBackup(type='manual',silent=false){try{await Promise.all([loadJobs(false),loadRecipients(false)]);const payload={version:'1.5',created_at:new Date().toISOString(),recipients,jobs};const body={user_id:session.user.id,backup_type:type,recipients_count:recipients.length,jobs_count:jobs.length,payload};const r=await api('/rest/v1/faxbox_backups',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error(await r.text());const cutoff=new Date(Date.now()-30*86400000).toISOString();await api('/rest/v1/faxbox_backups?created_at=lt.'+encodeURIComponent(cutoff),{method:'DELETE'});if(!silent)toast('バックアップを作成しました');await loadBackups()}catch(e){if(!silent)toast('バックアップ失敗: '+e.message)}}
 async function ensureAutoBackup(){const day=new Date().toLocaleDateString('sv-SE');if(localStorage.getItem(STORE.autoBackupDay)===day)return;await createBackup('auto',true);localStorage.setItem(STORE.autoBackupDay,day)}
 async function loadBackups(){try{const r=await api('/rest/v1/faxbox_backups?select=*&order=created_at.desc&limit=100');if(!r.ok)throw new Error(await r.text());backups=await r.json();$('backupBody').innerHTML=backups.length?backups.map(b=>`<tr><td>${fmt(b.created_at)}</td><td>${b.backup_type==='auto'?'自動':'手動'}</td><td>${b.recipients_count}</td><td>${b.jobs_count}</td><td><div class="actions"><button class="secondary" onclick="downloadBackup('${b.id}')">JSON</button><button class="warn" onclick="restoreRecipients('${b.id}')">送信先を復元</button><button class="danger" onclick="deleteBackup('${b.id}')">削除</button></div></td></tr>`).join(''):'<tr><td colspan="5" class="center muted">バックアップはありません</td></tr>'}catch(e){toast('バックアップ一覧取得失敗: '+e.message)}}
 function downloadBackup(id){const b=backups.find(x=>x.id===id);if(!b)return;const blob=new Blob([JSON.stringify(b.payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`faxbox-backup-${new Date(b.created_at).toISOString().replace(/[:.]/g,'-')}.json`;a.click();URL.revokeObjectURL(a.href)}
 async function restoreRecipients(id){const b=backups.find(x=>x.id===id);if(!b?.payload?.recipients)return;if(!confirm('現在の送信先マスターをバックアップ時点へ置き換えます。よろしいですか？'))return;try{let r=await api('/rest/v1/faxbox_recipients?user_id=eq.'+encodeURIComponent(session.user.id),{method:'DELETE'});if(!r.ok)throw new Error(await r.text());const data=b.payload.recipients.map(x=>({...x,user_id:session.user.id}));for(let i=0;i<data.length;i+=100){r=await api('/rest/v1/faxbox_recipients',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data.slice(i,i+100))});if(!r.ok)throw new Error(await r.text())}await loadRecipients();toast('送信先マスターを復元しました')}catch(e){toast('復元失敗: '+e.message)}}
 async function deleteBackup(id){if(!confirm('このバックアップを削除しますか？'))return;const r=await api('/rest/v1/faxbox_backups?id=eq.'+encodeURIComponent(id),{method:'DELETE'});if(r.ok){toast('削除しました');loadBackups()}else toast(await r.text())}
+
+function urlBase64ToUint8Array(base64String){
+  const padding='='.repeat((4-base64String.length%4)%4);
+  const base64=(base64String+padding).replace(/-/g,'+').replace(/_/g,'/');
+  const rawData=atob(base64);
+  return Uint8Array.from([...rawData].map(c=>c.charCodeAt(0)));
+}
+function isStandaloneApp(){
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
+}
+async function refreshPushBadgeStatus(){
+  const el=$('pushBadgeStatus');
+  if(!el)return;
+  try{
+    if(!('serviceWorker' in navigator)||!('PushManager' in window)||!('Notification' in window)){
+      el.textContent='この端末・ブラウザではWeb Pushに対応していません。';
+      return;
+    }
+    if(!isStandaloneApp()){
+      el.textContent='iPhoneでは、まずFAXBOXをホーム画面に追加し、そのアイコンから開いてください。';
+      return;
+    }
+    if(Notification.permission==='denied'){
+      el.textContent='通知が拒否されています。iPhoneの「設定 → 通知 → FAXBOX」で許可してください。';
+      return;
+    }
+    const reg=await navigator.serviceWorker.ready;
+    const sub=await reg.pushManager.getSubscription();
+    el.textContent=sub?'通知・ホーム画面バッジ：有効':'通知・ホーム画面バッジ：未設定';
+  }catch(e){
+    el.textContent='状態確認エラー: '+e.message;
+  }
+}
+async function enablePushBadge(){
+  try{
+    if(!session?.user?.id){toast('先にログインしてください');return}
+    if(!isStandaloneApp()){
+      toast('iPhoneではFAXBOXをホーム画面に追加し、そのアイコンから開いて設定してください');
+      return;
+    }
+    const publicKey=(window.FAXBOX_PUSH_VAPID_PUBLIC_KEY||'').trim();
+    if(!publicKey || publicKey.includes('REPLACE_ME')){
+      toast('push-config.js にVAPID公開鍵を設定してください');
+      return;
+    }
+    const permission=await Notification.requestPermission();
+    if(permission!=='granted'){
+      toast('通知が許可されませんでした');
+      await refreshPushBadgeStatus();
+      return;
+    }
+    const reg=await navigator.serviceWorker.ready;
+    let sub=await reg.pushManager.getSubscription();
+    if(!sub){
+      sub=await reg.pushManager.subscribe({
+        userVisibleOnly:true,
+        applicationServerKey:urlBase64ToUint8Array(publicKey)
+      });
+    }
+    const j=sub.toJSON();
+    const body={
+      user_id:session.user.id,
+      endpoint:j.endpoint,
+      p256dh:j.keys?.p256dh||'',
+      auth:j.keys?.auth||'',
+      subscription:j,
+      user_agent:navigator.userAgent,
+      updated_at:new Date().toISOString()
+    };
+    const r=await api('/rest/v1/faxbox_push_subscriptions?on_conflict=endpoint',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=representation'},
+      body:JSON.stringify(body)
+    });
+    if(!r.ok)throw new Error(await r.text());
+    await refreshPushBadgeStatus();
+    toast('iPhoneの通知・バッジを有効にしました');
+    await loadAll();
+  }catch(e){
+    toast('通知・バッジ設定失敗: '+e.message);
+    await refreshPushBadgeStatus();
+  }
+}
+async function disablePushBadge(){
+  try{
+    const reg=await navigator.serviceWorker.ready;
+    const sub=await reg.pushManager.getSubscription();
+    if(sub){
+      const endpoint=sub.endpoint;
+      await sub.unsubscribe();
+      if(session?.user?.id){
+        await api('/rest/v1/faxbox_push_subscriptions?endpoint=eq.'+encodeURIComponent(endpoint),{method:'DELETE'});
+      }
+    }
+    try{if(navigator.clearAppBadge)await navigator.clearAppBadge()}catch{}
+    await refreshPushBadgeStatus();
+    toast('通知・バッジを解除しました');
+  }catch(e){
+    toast('解除失敗: '+e.message);
+  }
+}
+
 async function boot(){const c=cfg();if(!c.url||!c.key){showSetup();return}try{session=JSON.parse(localStorage.getItem(STORE.session)||'null')}catch{}if(!session){showLogin();return}const me=await api('/auth/v1/user');if(me.ok){session.user=await me.json();showApp()}else if(await refreshSession()){showApp()}else logout()}
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});boot();setInterval(()=>{if(session)loadAll()},60000);
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});boot();setTimeout(()=>refreshPushBadgeStatus(),1200);setInterval(()=>{if(session)loadAll()},60000);
 </script>
 </body></html>
