@@ -1,4 +1,4 @@
-const CACHE='faxbox-v1.5';
+const CACHE='faxbox-v1.5.1';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./push-config.js','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install',e=>e.waitUntil(
